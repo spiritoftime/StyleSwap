@@ -11,6 +11,9 @@ import LandingPage from "./components/LandingPage";
 import AppLayout from "./components/AppLayout";
 import Profile from "./components/Profile";
 import { Cloudinary } from "@cloudinary/url-gen";
+import { AdvancedImage, lazyload } from "@cloudinary/react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { quality } from "@cloudinary/url-gen/actions/delivery";
 function App() {
   const { authDetails } = useAppContext();
 
