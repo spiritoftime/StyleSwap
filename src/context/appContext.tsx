@@ -2,19 +2,13 @@ import { useContext, useState, useRef, useEffect } from "react";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { convertToTitleCase } from "@/utils/convertText";
-
+import { User as FirebaseUser } from "firebase/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-type authDetails = {
-  uid: string;
-  displayName: string;
-  email: string;
-  photoURL: string;
-  emailVerified: boolean;
-};
+
 const AppContext = React.createContext({});
 const AppProvider = ({ children }) => {
   const { toast } = useToast();
-  const [authDetails, setAuthDetails] = useState<authDetails | object>({});
+  const [authDetails, setAuthDetails] = useState<FirebaseUser | object>({});
 
   const showToaster = (title?: string, message?: string, variant?: string) => {
     toast({

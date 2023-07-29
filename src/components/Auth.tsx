@@ -28,9 +28,9 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { Separator } from "./ui/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Separator } from "./ui/separator";
 interface AuthProps {
   isSignUp: boolean;
 }
@@ -52,8 +52,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
   const {
     control,
     watch,
-    getValues,
-    unregister,
+
     formState: { errors, isValid },
   } = form;
   const [authError, setAuthError] = useState<string>("");
@@ -61,21 +60,13 @@ const Auth = ({ isSignUp }: AuthProps) => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
+        console.log(user, "user");
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
-              setAuthDetails({ ...snapshot.val(), uid: user.uid });
-
               navigate("/playground");
             } else {
               set(ref(db, "users/" + user.uid), {
-                photoURL: user.photoURL,
-                emailVerified: user.emailVerified,
-                displayName: user.displayName,
-                uid: user.uid,
-                email: user.email,
-              });
-              setAuthDetails({
                 photoURL: user.photoURL,
                 emailVerified: user.emailVerified,
                 displayName: user.displayName,
@@ -103,7 +94,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
-              setAuthDetails({ ...snapshot.val(), uid: user.uid });
+              navigate("/playground");
             } else {
               console.log("No data available");
             }
@@ -111,7 +102,6 @@ const Auth = ({ isSignUp }: AuthProps) => {
           .catch((error) => {
             setAuthError(error.message);
           });
-        navigate("/playground");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -129,13 +119,6 @@ const Auth = ({ isSignUp }: AuthProps) => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        setAuthDetails({
-          photoURL: user.photoURL,
-          emailVerified: user.emailVerified,
-          displayName: user.displayName,
-          uid: user.uid,
-          email: user.email,
-        });
         set(ref(db, "users/" + user.uid), {
           photoURL: user.photoURL,
           emailVerified: user.emailVerified,
@@ -258,7 +241,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
           </div>
         </div>
       }
-      {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
+      <pre>{JSON.stringify(watch(), null, 2)}</pre>
     </Card>
   );
 };

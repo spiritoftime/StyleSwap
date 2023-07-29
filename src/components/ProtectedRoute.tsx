@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { setAuthDetails } = useAppContext();
-  const location = useLocation();
   const auth = getAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -15,20 +14,10 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     }
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log("user", user);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
-        const uid = user.uid;
-        const displayName = user.displayName ?? "";
-        const email = user.email ?? "";
-        const photoURL = user.photoURL ?? "";
-        const emailVerified = user.emailVerified;
-        setAuthDetails({
-          uid,
-          displayName,
-          email,
-          photoURL,
-          emailVerified,
-        });
+        setAuthDetails(user);
         return children;
       } else {
         setAuthDetails({});
@@ -36,6 +25,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       }
     });
   }, []);
+  return <>{auth.currentUser ? children : null}</>;
 };
 
 export default ProtectedRoute;

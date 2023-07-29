@@ -10,6 +10,8 @@ import Auth from "./components/Auth";
 import PlayGround from "@/components/PlayGround";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import LandingPage from "./components/LandingPage";
+import AppLayout from "./components/AppLayout";
+import Profile from "./components/Profile";
 
 function App() {
   const { authDetails } = useAppContext();
@@ -17,18 +19,29 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/login" element={<Auth isSignUp={false} />} />
-      <Route path="/register" element={<Auth isSignUp={true} />} />
+      <Route path="/" element={<AppLayout />}>
+        <Route path="/" index element={<LandingPage />} />
+        <Route path="/login" element={<Auth isSignUp={false} />} />
+        <Route path="/register" element={<Auth isSignUp={true} />} />
 
-      <Route
-        path="/playground"
-        element={
-          <ProtectedRoute>
-            <PlayGround />
-          </ProtectedRoute>
-        }
-      ></Route>
+        <Route
+          path="/playground"
+          element={
+            <ProtectedRoute>
+              <PlayGround />
+            </ProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        ></Route>
+      </Route>
     </Routes>
   );
 }
