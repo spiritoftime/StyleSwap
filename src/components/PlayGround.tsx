@@ -1,7 +1,8 @@
 import React from "react";
+import { Toaster } from "./ui/toaster";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 const PlayGround = () => {
-  const [imagesUploadedList, setImagesUploadedList] = useState([]);
   const cld = new Cloudinary({
     cloud: {
       cloud_name: import.meta.env.VITE_CLOUD_NAME, //Your cloud name

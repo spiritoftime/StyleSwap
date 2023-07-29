@@ -4,8 +4,8 @@
  * @returns {string} text in title case
  */
 export const convertToTitleCase = (text: string) => {
-  const textArr = text.split("");
-  const firstLetter = textArr[0].toUpperCase();
-  textArr[0] = firstLetter;
-  return textArr.join("");
+  return text
+    .split(" ")
+    .map((word) => word[0].toUpperCase() + word.substring(1))
+    .join(" ");
 };

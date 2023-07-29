@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../assets/logo-removebg-preview.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useMatch } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -12,21 +12,25 @@ import { useAppContext } from "@/context/appContext";
 import { ProfileIcon } from "./ProfileIcon";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import { convertToTitleCase } from "@/utils/convertText";
 const Navbar = () => {
   const { authDetails } = useAppContext();
   const navigate = useNavigate();
+  const homePageMatch = useMatch("/");
   return (
     <nav className="flex items-center justify-between py-8 mx-16">
       <div className="flex items-center gap-6 ">
         <Link to="/">
           <img className="h-[50px]" src={logo} alt="StyleSwap Logo" />
         </Link>
-        <a
-          className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-          href="/#features"
-        >
-          Features
-        </a>
+        {homePageMatch && (
+          <a
+            className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
+            href="/#features"
+          >
+            Features
+          </a>
+        )}
         <Link
           to="/playground"
           className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
@@ -42,7 +46,9 @@ const Navbar = () => {
       </div>
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
-          <p className="text-color">{authDetails.displayName}</p>
+          <p className="text-color">
+            {convertToTitleCase(authDetails.displayName)}
+          </p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button>
