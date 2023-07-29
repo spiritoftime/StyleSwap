@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import "./App.css";
 
+import { Button } from "./components/ui/button";
+import useCheckAuth from "./components/ProtectedRoute";
 import { useAppContext } from "./context/appContext";
 import { Route, Routes } from "react-router";
 import Auth from "./components/Auth";
@@ -10,12 +12,9 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import LandingPage from "./components/LandingPage";
 import AppLayout from "./components/AppLayout";
 import Profile from "./components/Profile";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage, lazyload } from "@cloudinary/react";
-import { fill } from "@cloudinary/url-gen/actions/resize";
-import { quality } from "@cloudinary/url-gen/actions/delivery";
 function App() {
   const { authDetails } = useAppContext();
+  console.log(authDetails);
 
   return (
     <Routes>

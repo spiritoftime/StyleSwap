@@ -14,6 +14,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     }
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log("user", user);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         setAuthDetails(user);

@@ -1,8 +1,4 @@
-import React, { useState } from "react";
-import { Toaster } from "./ui/toaster";
-import ImageUpload from "./ImageUpload";
-import { Cloudinary } from "@cloudinary/url-gen";
-import CldGallery from "./CldGallery";
+import React from "react";
 
 const PlayGround = () => {
   const [imagesUploadedList, setImagesUploadedList] = useState([]);
