@@ -12,6 +12,7 @@ import { useAppContext } from "@/context/appContext";
 import { ProfileIcon } from "./ProfileIcon";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import { capitalizeWords } from "@/utils/capitalizeWords";
 const Navbar = () => {
   const { authDetails } = useAppContext();
   const navigate = useNavigate();
@@ -42,7 +43,9 @@ const Navbar = () => {
       </div>
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
-          <p className="text-color">{authDetails.displayName}</p>
+          <p className="text-color">
+            {capitalizeWords(authDetails.displayName)}
+          </p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button>

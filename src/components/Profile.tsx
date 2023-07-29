@@ -21,8 +21,9 @@ import dummyPhoto from "@/assets/dummy.jpg";
 import { profileZod } from "@/utils/profileZod";
 import { useToast } from "./ui/use-toast";
 import { useNavigate } from "react-router";
+import { Toaster } from "./ui/toaster";
 const Profile = () => {
-  const { authDetails } = useAppContext();
+  const { authDetails, showToaster } = useAppContext();
   const { toast } = useToast();
   const inputRef = useRef(null);
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
@@ -82,9 +83,8 @@ const Profile = () => {
     updateProfile(authDetails, data)
       .then(() => {
         navigate("/");
-        toast({
-          description: "Profile Information Updated",
-        });
+        setPhotoPreviewLink("");
+        toast({ description: "Profile Information updated!" });
       })
       .catch((error) => {
         console.log(error, "error");
@@ -189,7 +189,7 @@ const Profile = () => {
           </Button>
         </form>
       </Form>
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      <Toaster />
     </div>
   );
 };
