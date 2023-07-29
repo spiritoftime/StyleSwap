@@ -1,10 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from "react";
+import { database } from "@/firebase.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+import { AppProvider } from "@/context/appContext";
+import { BrowserRouter } from "react-router-dom";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <React.StrictMode>
+      <AppProvider>
+        <App />
+      </AppProvider>
+    </React.StrictMode>
+  </BrowserRouter>
+);
