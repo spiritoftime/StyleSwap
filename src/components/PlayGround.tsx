@@ -22,14 +22,24 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import dummy from "@/assets/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
-import { Separator } from "@radix-ui/react-separator";
-import CustomSeparator from "./CustomSeparator";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import PlaygroundUpload from "./PlaygroundUpload";
 const PlayGround = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [enableTransform, setEnableTransform] = useState(false);
+  const [tab, setTab] = useState("upload-image");
   const form = useForm({
     resolver: zodResolver(),
     defaultValues: {},
@@ -84,8 +94,59 @@ const PlayGround = () => {
           </DialogContent>
         </Dialog>
       </div>
+      <Tabs
+        value={tab}
+        onValueChange={setTab}
+        className="lg:w-[800px]  mx-auto"
+      >
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="upload-image">Upload Image</TabsTrigger>
+          <TabsTrigger disabled={!enableTransform} value="transform-image">
+            Transform Image
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent className="lg:w-[800px]" value="upload-image">
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload Image</CardTitle>
+              <CardDescription>
+                Upload an image first before you can play around with the
+                transform playground.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <PlaygroundUpload
+                setTab={setTab}
+                setEnableTransform={setEnableTransform}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent className="lg:w-[800px]" value="transform-image">
+          <Card>
+            <CardHeader>
+              <CardTitle>Password</CardTitle>
+              <CardDescription>
+                Change your password here. After saving, you'll be logged out.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="current">Current password</Label>
+                <Input id="current" type="password" />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="new">New password</Label>
+                <Input id="new" type="password" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button>Save password</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
       {/* upload image */}
-      <PlaygroundUpload />
       <pre>{JSON.stringify(watch(), null, 2)}</pre>
 
       <Toaster />

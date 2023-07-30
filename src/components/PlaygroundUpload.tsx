@@ -12,7 +12,7 @@ import { child, get, getDatabase, ref, set } from "firebase/database";
 
 import { convertImageToBaseUri } from "@/utils/convertImageToBaseUri";
 
-const PlaygroundUpload = () => {
+const PlaygroundUpload = ({ setEnableTransform, setTab }) => {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -37,6 +37,8 @@ const PlaygroundUpload = () => {
           photoURL: secure_url,
           publicId: public_id,
         });
+        setEnableTransform(true);
+        setTab("transform-image");
       },
     });
   const submitHandler = async (e) => {
@@ -97,7 +99,7 @@ const PlaygroundUpload = () => {
       <div className="flex-col gap-4">
         <p className="text-sm font-semibold text-muted-foreground">Preview</p>
         <img
-          className="max-w-[250px] max-h-[250px]"
+          className="w-[250px] h-[250px] object-cover	"
           src={(image && URL.createObjectURL(image)) || url || dummy}
         />
       </div>
