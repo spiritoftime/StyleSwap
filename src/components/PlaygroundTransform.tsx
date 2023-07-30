@@ -10,7 +10,7 @@ import { uploadImage } from "./services/upload";
 import { useAppContext } from "@/context/appContext";
 import { child, get, getDatabase, ref, set } from "firebase/database";
 
-const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
+const PlaygroundTransform = () => {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -36,9 +36,6 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
           photoURL: secure_url,
           publicId: public_id,
         });
-        setEnableTransform(true);
-        setTab("transform-image");
-        setFileName(fileName);
       },
     });
   const submitHandler = async (e) => {
@@ -65,39 +62,37 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
   };
   return (
     <div className="flex justify-between items-center gap-8">
-      <form onSubmit={submitHandler}>
+      <form className="w-[60%]" onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
-            <Label className="whitespace-nowrap" htmlFor="upload-url">
-              Upload By URL:
+            <Label className="whitespace-nowrap" htmlFor="target">
+              What To Replace:
             </Label>
             <Input
               onChange={(e) => setUrl(e.target.value)}
-              id="upload-url"
+              id="target"
               type="text"
             />
           </div>
-          <CustomSeparator />
-          <div className="flex items-center">
-            <div className="flex items-center gap-4">
-              <Label className="whitespace-nowrap" htmlFor="upload-img">
-                Upload By File:
-              </Label>
-              <Input
-                onChange={(e) => setImage(e.target.files[0])}
-                id="upload-img"
-                accept="image/jpeg, image/jpg, image/png, image/webp"
-                type="file"
-              />
-            </div>
+          <div className="flex  items-center gap-4">
+            <Label className="whitespace-nowrap" htmlFor="replace">
+              To Replace With:
+            </Label>
+            <Input
+              onChange={(e) => setUrl(e.target.value)}
+              id="replace"
+              type="text"
+            />
           </div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Generate Image</Button>
           {error && <p className="text-red-500">{error}</p>}
         </div>
       </form>
 
-      <div className="flex-col gap-4">
-        <p className="text-sm font-semibold text-muted-foreground">Preview</p>
+      <div className="flex  flex-col gap-4">
+        <p className="text-sm font-semibold text-muted-foreground">
+          Your Image
+        </p>
         <img
           className="w-[250px] h-[250px] object-cover	"
           src={(image && URL.createObjectURL(image)) || url || dummy}
@@ -107,4 +102,4 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
   );
 };
 
-export default PlaygroundUpload;
+export default PlaygroundTransform;

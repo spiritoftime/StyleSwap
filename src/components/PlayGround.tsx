@@ -36,10 +36,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import PlaygroundUpload from "./PlaygroundUpload";
+import PlaygroundTransform from "./PlaygroundTransform";
 const PlayGround = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [enableTransform, setEnableTransform] = useState(false);
-  const [tab, setTab] = useState("upload-image");
+  const [tab, setTab] = useState("transform-image");
+  const [fileName, setFileName] = useState("mgpiwnzdi1dup3w6h61b.png");
   const form = useForm({
     resolver: zodResolver(),
     defaultValues: {},
@@ -116,6 +118,7 @@ const PlayGround = () => {
             </CardHeader>
             <CardContent className="space-y-2">
               <PlaygroundUpload
+                setFileName={setFileName}
                 setTab={setTab}
                 setEnableTransform={setEnableTransform}
               />
@@ -125,24 +128,14 @@ const PlayGround = () => {
         <TabsContent className="lg:w-[800px]" value="transform-image">
           <Card>
             <CardHeader>
-              <CardTitle>Password</CardTitle>
+              <CardTitle>Transform</CardTitle>
               <CardDescription>
-                Change your password here. After saving, you'll be logged out.
+                Make your custom image! Click the info icon for instructions.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <div className="space-y-1">
-                <Label htmlFor="current">Current password</Label>
-                <Input id="current" type="password" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="new">New password</Label>
-                <Input id="new" type="password" />
-              </div>
+              <PlaygroundTransform />
             </CardContent>
-            <CardFooter>
-              <Button>Save password</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>
