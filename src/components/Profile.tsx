@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { getAuth, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -119,7 +119,6 @@ const Profile = () => {
                     accept="image/*"
                     type="file"
                     onChange={(e) => {
-                      console.log(field.onChange, "field.onChange");
                       field.onChange(e.target.files[0]);
                       handlePhotoInput(e);
                     }}
@@ -189,7 +188,7 @@ const Profile = () => {
           </Button>
         </form>
       </Form>
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
     </div>
   );
 };
