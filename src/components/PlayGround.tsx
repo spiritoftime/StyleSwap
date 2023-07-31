@@ -1,6 +1,7 @@
 import { Info } from "lucide-react";
 import { Toaster } from "./ui/toaster";
-import { Cloudinary } from "@cloudinary/url-gen";
+import firstImage from "../assets/image-1.png";
+import secondImage from "../assets/image-2.png";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -43,19 +44,25 @@ const PlayGround = () => {
               <Info />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] ">
             <DialogHeader>
               <DialogTitle>Instructions for Playground</DialogTitle>
               <DialogDescription>How to get started</DialogDescription>
             </DialogHeader>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
-                {
-                  "1) Upload an image - you can choose to upload an image or paste a url link containing the image"
-                }
+                <h4 className="text-lg font-semibold leading-none tracking-tight">
+                  {
+                    "1) Upload an image - you can choose to upload an image or paste a url link containing the image"
+                  }
+                  <img src={firstImage} />
+                </h4>
               </div>
               <div className="flex flex-col gap-2">
-                {"2) Apply your transformation to see the magic!"}
+                <h4 className="text-lg font-semibold leading-none tracking-tight">
+                  {"2) Apply your transformation to see the magic!"}
+                </h4>
+                <img src={secondImage} />
               </div>
             </div>
             <DialogFooter>
