@@ -11,24 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "./ui/input";
+
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -40,27 +29,8 @@ import PlaygroundTransform from "./PlaygroundTransform";
 const PlayGround = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [enableTransform, setEnableTransform] = useState(false);
-  const [tab, setTab] = useState("transform-image");
-  const [fileName, setFileName] = useState("mgpiwnzdi1dup3w6h61b.png");
-  const form = useForm({
-    resolver: zodResolver(),
-    defaultValues: {},
-    mode: "onChange",
-  });
-  const {
-    control,
-    watch,
-    getValues,
-    unregister,
-    formState: { errors, isValid },
-  } = form;
-  const onSubmit = (data) => {};
-  const cld = new Cloudinary({
-    cloud: {
-      cloud_name: import.meta.env.VITE_CLOUD_NAME, //Your cloud name
-      upload_preset: import.meta.env.VITE_UPLOAD_PRESET, //Create an unsigned upload preset and update this
-    },
-  });
+  const [tab, setTab] = useState("upload-image");
+  const [fileName, setFileName] = useState("");
   return (
     <div className="flex flex-col gap-8 mx-12">
       <div className="flex items-center gap-4">
@@ -130,17 +100,19 @@ const PlayGround = () => {
             <CardHeader>
               <CardTitle>Transform</CardTitle>
               <CardDescription>
-                Make your custom image! Click the info icon for instructions.
+                Make your custom image! Type what you want to replace and what
+                to replace with. Click the info icon at playground header for
+                more info.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <PlaygroundTransform />
+              <PlaygroundTransform fileName={fileName} />
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
       {/* upload image */}
-      <pre>{JSON.stringify(watch(), null, 2)}</pre>
+      {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
 
       <Toaster />
     </div>

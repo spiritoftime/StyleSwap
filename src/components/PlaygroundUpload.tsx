@@ -26,19 +26,21 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
         return uploadImage(userId, formData);
       },
       onSuccess: (cloudinaryData) => {
-        const { secure_url, public_id } = cloudinaryData;
+        const { secure_url, public_id, format } = cloudinaryData;
         console.log(cloudinaryData, "cloudinaryData");
         const fileName = `${
           secure_url.split("/")[secure_url.split("/").length - 1]
         }`;
+        const extension = "." + format;
         set(ref(db, "uploadedImages/" + userId + public_id), {
           fileName: fileName,
           photoURL: secure_url,
           publicId: public_id,
+          extension: extension,
         });
         setEnableTransform(true);
         setTab("transform-image");
-        setFileName(fileName);
+        setFileName(public_id + extension);
       },
     });
   const submitHandler = async (e) => {
@@ -51,7 +53,6 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     // upload file to cloudinary
     const formData = new FormData();
     if (image) {
-      console.log(image, "image");
       formData.append("file", image);
       // const imageuri = await convertImageToBaseUri(image);
     } else if (url) {

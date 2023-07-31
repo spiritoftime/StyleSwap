@@ -24,12 +24,12 @@ import { useNavigate } from "react-router";
 const Profile = () => {
   const { authDetails } = useAppContext();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
     authDetails && authDetails.photoURL
   );
   const navigate = useNavigate();
-  const isLoading = false;
   const handleInputClick = () => {
     inputRef.current.click();
   };
@@ -63,6 +63,7 @@ const Profile = () => {
   } = form;
   const onSubmit = async (data) => {
     console.log(data, "data");
+    setIsLoading(true);
     if (data.photo !== "") {
       const storageRef = ref(
         storage,
@@ -77,16 +78,18 @@ const Profile = () => {
 
       data.photoURL = photoUrl;
       delete data.photo;
-    }
-
+    } else data.photoURL = authDetails.photoURL;
     updateProfile(authDetails, data)
       .then(() => {
+        console.log("success");
+        setIsLoading(false);
         navigate("/");
         toast({
           description: "Profile Information Updated",
         });
       })
       .catch((error) => {
+        setIsLoading(false);
         console.log(error, "error");
       });
   };
