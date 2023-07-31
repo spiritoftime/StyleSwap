@@ -1,5 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import {
+  getDatabase,
+  ref as dbRef,
+  child,
+  remove,
+  get,
+  onChildAdded,
+  onChildChanged,
+  onChildRemoved,
+} from "firebase/database";
+
 import { storage } from "../firebase";
 import { useAppContext } from "@/context/appContext";
 import {
@@ -12,7 +23,17 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { updateProfile } from "firebase/auth";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
@@ -21,9 +42,14 @@ import dummyPhoto from "@/assets/dummy.jpg";
 import { profileZod } from "@/utils/profileZod";
 import { useToast } from "./ui/use-toast";
 import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { deleteImages } from "./services/upload";
+import { Toaster } from "./ui/toaster";
 const Profile = () => {
   const { authDetails } = useAppContext();
+
   const { toast } = useToast();
+  const DB = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
@@ -93,7 +119,51 @@ const Profile = () => {
         console.log(error, "error");
       });
   };
+  const { data: cloudinaryData, mutate: deleteCloudinaryMutation } =
+    useMutation({
+      mutationFn: (data) => {
+        console.log("mutation data", data);
+        return deleteImages(authDetails.uid, data);
+      },
+      onSuccess: (cloudinaryData) => {
+        console.log(cloudinaryData, "delete cloudinaryData");
+        // delete firebase records
+        const userRef = dbRef(DB, "uploadedImages/" + authDetails.uid);
+        remove(userRef)
+          .then(() => {
+            console.log("Data removed successfully.");
+            toast({
+              description: "Your photos have been removed",
+            });
+          })
+          .catch((error) => {
+            console.error("Error removing data:", error);
+          });
+        setIsLoading(false);
+      },
+    });
+  const deletePictureHandler = () => {
+    // fetch public ids from firebase
+    const DBRef = dbRef(DB);
 
+    get(child(DBRef, `uploadedImages/${authDetails.uid}`)).then((snapshot) => {
+      console.log(snapshot, "snapshot");
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        console.log(data, "data snapshot");
+        const publicIds = Object.values(data).map((item) => item.publicId);
+        deleteCloudinaryMutation({ publicId: publicIds });
+      } else {
+        console.log("No data available");
+      }
+    });
+    // const uploadedImageRef = dbRef(db, "uploadedImages/" + authDetails.uid);
+    // uploadedImageRef.once("value").then((snapshot) => {
+    //   const userData = snapshot.val();
+    //   console.log("userData", userData);
+    // });
+    // deleteCloudinaryMutation({ publicId });
+  };
   return (
     <div className="w-[60%] mx-auto  ">
       <button type="button" onClick={handleInputClick} className="mt-10">
@@ -191,7 +261,30 @@ const Profile = () => {
           </Button>
         </form>
       </Form>
-      {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button className="mt-6" variant="destructive">
+            Delete Pictures
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete all
+              your uploaded images (except profile image) and remove your data
+              from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deletePictureHandler}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Toaster />
     </div>
   );
 };

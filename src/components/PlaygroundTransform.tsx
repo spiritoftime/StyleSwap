@@ -91,10 +91,19 @@ const PlaygroundTransform = ({ fileName }) => {
         <p className="text-sm font-semibold text-muted-foreground">
           Your Image
         </p>
-        <img
-          className="w-[250px] h-[250px] object-cover	"
-          src={preview || dummy}
-        />
+        {preview ? (
+          <figure>
+            <a href={preview} target="_blank" rel="noopener noreferrer">
+              <img
+                src={preview}
+                className="w-[250px] h-[250px] object-cover	"
+                alt="Your uploaded Image"
+              />
+            </a>
+          </figure>
+        ) : (
+          <img className="w-[250px] h-[250px] object-cover" src={dummy} />
+        )}
       </div>
     </div>
   );

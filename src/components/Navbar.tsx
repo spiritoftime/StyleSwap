@@ -46,7 +46,7 @@ const Navbar = () => {
       </div>
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
-          <p className="text-color">
+          <p className=" font-semibold">
             {convertToTitleCase(authDetails.displayName)}
           </p>
           <DropdownMenu>

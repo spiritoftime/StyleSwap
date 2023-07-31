@@ -34,7 +34,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
           secure_url.split("/")[secure_url.split("/").length - 1]
         }`;
         const extension = "." + format;
-        set(ref(db, "uploadedImages/" + userId + public_id), {
+        set(ref(db, `uploadedImages/${public_id}`), {
           fileName: fileName,
           photoURL: secure_url,
           publicId: public_id,
@@ -112,10 +112,36 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
 
       <div className="flex-col gap-4">
         <p className="text-sm font-semibold text-muted-foreground">Preview</p>
-        <img
-          className="w-[250px] h-[250px] object-cover	"
-          src={(image && URL.createObjectURL(image)) || url || dummy}
-        />
+        {image && (
+          <figure>
+            <a
+              href={URL.createObjectURL(image)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={URL.createObjectURL(image)}
+                className="w-[250px] h-[250px] object-cover	"
+                alt="Your uploaded Image"
+              />
+            </a>
+          </figure>
+        )}
+        {url && (
+          <figure>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <img
+                src={url}
+                className="w-[250px] h-[250px] object-cover	"
+                alt="Your uploaded Image"
+              />
+            </a>
+          </figure>
+        )}
+
+        {!url && !image && (
+          <img className="w-[250px] h-[250px] object-cover	" src={dummy} />
+        )}
       </div>
     </div>
   );
