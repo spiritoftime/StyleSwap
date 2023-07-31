@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import dummy from "@/assets/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
-import CustomSeparator from "./CustomSeparator";
 import { Button } from "./ui/button";
-import { uploadData } from "./services/upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "@/context/appContext";
 import { child, get, getDatabase, ref, set } from "firebase/database";
 import { transformImage } from "./services/transform";
+import { Loader2 } from "lucide-react";
 
 const PlaygroundTransform = ({ fileName }) => {
   const [replaceWith, setReplaceWith] = useState("");
   const [toReplace, setToReplace] = useState("");
   const [preview, setPreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const db = getDatabase();
   console.log(preview, "preview");
   const {
@@ -34,20 +35,12 @@ const PlaygroundTransform = ({ fileName }) => {
         };
         const url = getImageUrlFromImageElementString(cloudinaryData);
         setPreview(url);
-        // const { secure_url, public_id } = cloudinaryData;
-        // console.log(cloudinaryData, "cloudinaryData");
-        // const fileName = `${
-        //   secure_url.split("/")[secure_url.split("/").length - 1]
-        // }`;
-        // set(ref(db, "uploadedImages/" + userId + public_id), {
-        //   fileName: fileName,
-        //   photoURL: secure_url,
-        //   publicId: public_id,
-        // });
+        setIsLoading(false);
       },
     });
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!toReplace || !replaceWith) setError("Please fill in both fields");
     // "gen_replace:from_shirt;to_suit_jacket"
     const prompt = `gen_replace:from_${toReplace};to_${replaceWith}`;
@@ -80,7 +73,16 @@ const PlaygroundTransform = ({ fileName }) => {
               type="text"
             />
           </div>
-          <Button type="submit">Generate Image</Button>
+          <Button type="submit">
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Generate Image"
+            )}
+          </Button>
           {error && <p className="text-red-500">{error}</p>}
         </div>
       </form>

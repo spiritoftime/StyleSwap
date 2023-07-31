@@ -9,11 +9,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadImage } from "./services/upload";
 import { useAppContext } from "@/context/appContext";
 import { child, get, getDatabase, ref, set } from "firebase/database";
+import { Loader2 } from "lucide-react";
 
 const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const db = getDatabase();
 
   const {
@@ -40,11 +42,13 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
         });
         setEnableTransform(true);
         setTab("transform-image");
+        setIsLoading(false);
         setFileName(public_id + extension);
       },
     });
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!image && !url) setError("Please upload an image or enter an url");
     if (image && url)
       setError(
@@ -92,7 +96,16 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
               />
             </div>
           </div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
           {error && <p className="text-red-500">{error}</p>}
         </div>
       </form>
