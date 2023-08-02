@@ -14,7 +14,7 @@ import { auth } from "../firebase";
 import { convertToTitleCase } from "@/utils/convertText";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import MobileNav from "./mobileNav";
+import MobileNav from "./MobileNav";
 const Navbar = () => {
   const { authDetails, setAuthDetails } = useAppContext();
 
