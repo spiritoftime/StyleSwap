@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   GoogleAuthProvider,
   getAuth,
@@ -8,17 +8,9 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { child, get, getDatabase, ref, set } from "firebase/database";
-import { useAppContext } from "../context/appContext";
 import { Button } from "./ui/button";
 import { authZod } from "@/utils/authZod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -28,17 +20,21 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "./ui/separator";
 interface AuthProps {
   isSignUp: boolean;
 }
+type FormValues = {
+  password: string;
+  email: string;
+};
 const Auth = ({ isSignUp }: AuthProps) => {
   const db = getDatabase();
   const navigate = useNavigate();
   const dbRef = ref(db);
-  const { setAuthDetails } = useAppContext();
+
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   const form = useForm({
@@ -49,12 +45,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
     },
     mode: "onChange",
   });
-  const {
-    control,
-    watch,
-
-    formState: { errors, isValid },
-  } = form;
+  const { control } = form;
   const [authError, setAuthError] = useState<string>("");
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -86,7 +77,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
       });
   };
 
-  const LoginWithEmailAndPassword = (email, password) => {
+  const LoginWithEmailAndPassword = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -114,7 +105,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
         // ..
       });
   };
-  const SignUpWithEmailAndPassword = (email, password) => {
+  const SignUpWithEmailAndPassword = (email: string, password: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -130,13 +121,12 @@ const Auth = ({ isSignUp }: AuthProps) => {
         navigate("/playground");
       })
       .catch((error: Error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         setAuthError(errorMessage);
         // ..
       });
   };
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     // console.log(data, "data");
     if (isSignUp) {
       SignUpWithEmailAndPassword(data.email, data.password);

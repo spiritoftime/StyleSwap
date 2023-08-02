@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, DataSnapshot } from "firebase/database";
 
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppContext } from "@/context/appContext";
 import MasonryGrid from "./MasonryGrid";
-
+type SnapshotCallback = (snapshot: DataSnapshot) => void;
 const PersonalPictures = () => {
   const [tab, setTab] = useState("uploaded-images");
   const [uploadedImages, setUploadedImages] = useState(null);
@@ -24,12 +24,12 @@ const PersonalPictures = () => {
     const db = getDatabase();
     const uploadedImagesRef = ref(db, "uploadedImages/" + userId);
     const transformedImagesRef = ref(db, "transformedImages/" + userId);
-    const handleDataChange = (snapshot) => {
+    const handleDataChange: SnapshotCallback = (snapshot) => {
       const data = snapshot.val();
       setUploadedImages(Object.values(data));
     };
 
-    const handleTransformedChange = (snapshot) => {
+    const handleTransformedChange: SnapshotCallback = (snapshot) => {
       const data = snapshot.val();
       setTransformedImages(Object.values(data));
     };

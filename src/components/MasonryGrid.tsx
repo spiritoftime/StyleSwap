@@ -6,7 +6,7 @@ const MasonryGrid = ({ uploadedImages }) => {
 
   // console.log(numPages, "numPages");
   const [currentPage, setCurrentPage] = useState(0);
-  const groupImages = (images, groupSize) => {
+  const groupImages = (images, groupSize: number) => {
     const grouped = [];
     for (let i = 0; i < images.length; i += groupSize) {
       grouped.push(images.slice(i, i + groupSize));
@@ -20,7 +20,7 @@ const MasonryGrid = ({ uploadedImages }) => {
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {imagesInGroupsOfThree.map((group, groupIndex) => (
           <div key={groupIndex} className="grid gap-4">
-            {group.map(({ photoURL }, imageIndex) => (
+            {group.map(({ photoURL }, imageIndex: number) => (
               <div key={imageIndex} className="aspect-w-1 aspect-h-1">
                 <figure className="w-full h-full">
                   <a href={photoURL} target="_blank" rel="noopener noreferrer">

@@ -1,16 +1,21 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState } from "react";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { convertToTitleCase } from "@/utils/convertText";
 import { User as FirebaseUser } from "firebase/auth";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+interface AppContextProps {
+  children: JSX.Element;
+}
 const AppContext = React.createContext({});
-const AppProvider = ({ children }) => {
+const AppProvider: React.FC<AppContextProps> = ({ children }) => {
   const { toast } = useToast();
   const [authDetails, setAuthDetails] = useState<FirebaseUser | object>({});
 
-  const showToaster = (title?: string, message?: string, variant?: string) => {
+  const showToaster = (
+    title?: string | null | undefined,
+    message?: string | null | undefined,
+    variant?: string | null | undefined
+  ) => {
     toast({
       variant: variant ?? "default",
       title: title && title.length > 0 ? convertToTitleCase(title) : null,

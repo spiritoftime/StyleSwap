@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import dummy from "@/assets/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation,  } from "@tanstack/react-query";
 import { useAppContext } from "@/context/appContext";
 import { getDatabase, push, ref, set } from "firebase/database";
 import { transformImage } from "./services/transform";
@@ -21,13 +21,13 @@ const PlaygroundTransform = ({ fileName }) => {
     authDetails: { uid: userId },
   } = useAppContext();
   const [error, setError] = useState("");
-  const { data: cloudinaryData, mutate: transformCloudinaryMutation } =
+  const {  mutate: transformCloudinaryMutation } =
     useMutation({
       mutationFn: ({ fileName, prompt }) => {
         return transformImage(userId, fileName, prompt);
       },
-      onSuccess: (cloudinaryData) => {
-        const getImageUrlFromImageElementString = (imageElementString) => {
+      onSuccess: (cloudinaryData:string) => {
+        const getImageUrlFromImageElementString = (imageElementString:string) => {
           const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
           const match = srcRegex.exec(imageElementString);
           return match ? match[1] : null;

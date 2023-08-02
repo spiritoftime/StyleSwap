@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-
-const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
+type PaginationProps = {
+  numPages: number;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+};
+const Pagination: React.FC<PaginationProps> = ({ numPages, currentPage, setCurrentPage }) => {
   const pagesToShow = 5;
   const [paginationArray, setPaginationArray] = useState<number[]>([]);
   useEffect(() => {
