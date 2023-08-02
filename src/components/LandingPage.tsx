@@ -9,8 +9,8 @@ import Features from "./Features";
 const LandingPage = () => {
   return (
     <div className="flex flex-col mx-6 sm:mx-20">
-      <section className="flex gap-8 pt-16">
-        <div className="w-[50%]">
+      <section className="flex flex-col gap-8 pt-16 lg:flex-row">
+        <div className="lg:w-[50%] w-full">
           <h1 className="text-3xl font-heading sm:text-5xl md:text-6xl text-[#0f172a] lg:text-7xl">
             AI video/image software for your editing needs.
           </h1>
@@ -19,7 +19,7 @@ const LandingPage = () => {
             OUR SOLUTIONS
           </a>
         </div>
-        <div className="w-[50%]">
+        <div className="lg:w-[50%] w-full">
           <Carousel images={[firstImage, secondImage]} />
         </div>
       </section>

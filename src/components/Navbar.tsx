@@ -81,8 +81,8 @@ const Navbar = () => {
         )}
       </div>
       <button
+        onClick={() => setShowMobileMenu((prev) => !prev)}
         className="flex items-center space-x-2 md:hidden"
-        onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
         {showMobileMenu ? (
           <X />
@@ -92,16 +92,10 @@ const Navbar = () => {
         <span className="font-bold">Menu</span>
       </button>
       {!homePageMatch && showMobileMenu && (
-        <MobileNav
-          setShowMobileMenu={setShowMobileMenu}
-          navItems={otherPageItems}
-        />
+        <MobileNav navItems={otherPageItems} />
       )}
       {homePageMatch && showMobileMenu && (
-        <MobileNav
-          setShowMobileMenu={setShowMobileMenu}
-          navItems={landingPageItems}
-        />
+        <MobileNav navItems={landingPageItems} />
       )}
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
