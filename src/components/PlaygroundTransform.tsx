@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "@/context/appContext";
-import { child, get, getDatabase, ref, set } from "firebase/database";
+import { getDatabase, push, ref, set } from "firebase/database";
 import { transformImage } from "./services/transform";
 import { Loader2 } from "lucide-react";
 
@@ -27,7 +27,6 @@ const PlaygroundTransform = ({ fileName }) => {
         return transformImage(userId, fileName, prompt);
       },
       onSuccess: (cloudinaryData) => {
-        console.log("cloudinary", cloudinaryData, typeof cloudinaryData);
         const getImageUrlFromImageElementString = (imageElementString) => {
           const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
           const match = srcRegex.exec(imageElementString);
@@ -35,6 +34,11 @@ const PlaygroundTransform = ({ fileName }) => {
         };
         const url = getImageUrlFromImageElementString(cloudinaryData);
         setPreview(url);
+        const transformedImageRef = push(
+          ref(db, `transformedImages/${userId}`)
+        );
+        set(transformedImageRef, { photoURL: url });
+
         setIsLoading(false);
       },
     });
@@ -50,7 +54,7 @@ const PlaygroundTransform = ({ fileName }) => {
     });
   };
   return (
-    <div className="flex justify-between items-center gap-8">
+    <div className="flex items-center justify-between gap-8">
       <form className="w-[60%]" onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
@@ -63,7 +67,7 @@ const PlaygroundTransform = ({ fileName }) => {
               type="text"
             />
           </div>
-          <div className="flex  items-center gap-4">
+          <div className="flex items-center gap-4">
             <Label className="whitespace-nowrap" htmlFor="replace-with">
               To Replace With:
             </Label>
@@ -87,7 +91,7 @@ const PlaygroundTransform = ({ fileName }) => {
         </div>
       </form>
 
-      <div className="flex  flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <p className="text-sm font-semibold text-muted-foreground">
           Your Image
         </p>

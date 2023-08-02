@@ -69,7 +69,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     });
   };
   return (
-    <div className="flex justify-between items-center gap-8">
+    <div className="flex items-center justify-between gap-8">
       <form onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
