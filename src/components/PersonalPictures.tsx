@@ -8,18 +8,34 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { User as FirebaseUser } from "firebase/auth";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppContext } from "@/context/appContext";
 import MasonryGrid from "./MasonryGrid";
 type SnapshotCallback = (snapshot: DataSnapshot) => void;
+interface UploadedImage {
+  extension: string;
+  fileName: string;
+  photoURL: string;
+  publicId: string;
+}
+interface TransformedImage {
+  photoURL: string;
+}
 const PersonalPictures = () => {
   const [tab, setTab] = useState("uploaded-images");
-  const [uploadedImages, setUploadedImages] = useState(null);
-  const [transformedImages, setTransformedImages] = useState(null);
+  const [uploadedImages, setUploadedImages] = useState<UploadedImage[] | null>(
+    null
+  );
+  const [transformedImages, setTransformedImages] = useState<
+    TransformedImage[] | null
+  >(null);
+
   const {
     authDetails: { uid: userId },
-  } = useAppContext();
+  }: { authDetails: FirebaseUser | object } = useAppContext();
+
   useEffect(() => {
     const db = getDatabase();
     const uploadedImagesRef = ref(db, "uploadedImages/" + userId);

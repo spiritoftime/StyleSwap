@@ -21,6 +21,6 @@ const useCheckAuth = () => {
         setAuthDetails({});
       }
     });
-  }, []);
+  }, [auth, setAuthDetails]);
 };
 export default useCheckAuth;

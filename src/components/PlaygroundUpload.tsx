@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
 
 const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
   const [url, setUrl] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const db = getDatabase();
 
@@ -20,30 +20,29 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     authDetails: { uid: userId },
   } = useAppContext();
   const [error, setError] = useState("");
-  const {  mutate: uploadCloudinaryMutation } =
-    useMutation({
-      mutationFn: ({ userId, formData }) => {
-        return uploadImage(userId, formData);
-      },
-      onSuccess: (cloudinaryData) => {
-        const { secure_url, public_id, format } = cloudinaryData;
-        // console.log(cloudinaryData, "cloudinaryData");
-        const fileName = `${
-          secure_url.split("/")[secure_url.split("/").length - 1]
-        }`;
-        const extension = "." + format;
-        set(ref(db, `uploadedImages/${public_id}`), {
-          fileName: fileName,
-          photoURL: secure_url,
-          publicId: public_id,
-          extension: extension,
-        });
-        setEnableTransform(true);
-        setTab("transform-image");
-        setIsLoading(false);
-        setFileName(public_id + extension);
-      },
-    });
+  const { mutate: uploadCloudinaryMutation } = useMutation({
+    mutationFn: ({ userId, formData }) => {
+      return uploadImage(userId, formData);
+    },
+    onSuccess: (cloudinaryData) => {
+      const { secure_url, public_id, format } = cloudinaryData;
+      // console.log(cloudinaryData, "cloudinaryData");
+      const fileName = `${
+        secure_url.split("/")[secure_url.split("/").length - 1]
+      }`;
+      const extension = "." + format;
+      set(ref(db, `uploadedImages/${public_id}`), {
+        fileName: fileName,
+        photoURL: secure_url,
+        publicId: public_id,
+        extension: extension,
+      });
+      setEnableTransform(true);
+      setTab("transform-image");
+      setIsLoading(false);
+      setFileName(public_id + extension);
+    },
+  });
   const submitHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -87,7 +86,9 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
                 Upload By File:
               </Label>
               <Input
-                onChange={(e) => setImage(e.target.files[0])}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.files) setImage(e.target.files[0]);
+                }}
                 id="upload-img"
                 accept="image/jpeg, image/jpg, image/png, image/webp"
                 type="file"

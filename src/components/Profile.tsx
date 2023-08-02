@@ -7,6 +7,7 @@ import {
   remove,
   get,
 } from "firebase/database";
+import { SubmitHandler } from "react-hook-form";
 
 import { storage } from "../firebase";
 import { useAppContext } from "@/context/appContext";
@@ -42,6 +43,7 @@ import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { deleteImages } from "./services/upload";
 import { Toaster } from "./ui/toaster";
+
 const Profile = () => {
   const { authDetails } = useAppContext();
 
@@ -50,6 +52,7 @@ const Profile = () => {
     defaultValues: {
       email: "",
       displayName: "",
+      photo: null,
     },
     mode: "onChange",
   });
@@ -62,7 +65,7 @@ const Profile = () => {
   );
   const navigate = useNavigate();
   const handleInputClick = () => {
-    inputRef.current.click();
+    inputRef.current && inputRef.current.click();
   };
   useEffect(() => {
     if (authDetails.uid) {
@@ -73,15 +76,20 @@ const Profile = () => {
       setPhotoPreviewLink(authDetails.photoURL);
     }
   }, [authDetails, form]);
-  const handlePhotoInput = (event) => {
+  const handlePhotoInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Create a preview of the file before uploading it onto database
-    setPhotoPreviewLink(URL.createObjectURL(event.target.files[0]));
+    if (event.target.files && event.target.files[0])
+      setPhotoPreviewLink(URL.createObjectURL(event.target.files[0]));
   };
-
-  const onSubmit = async (data) => {
-    // console.log(data, "data");
+  type submitData = {
+    email: string;
+    displayName: string;
+    photo?: File | null;
+    photoURL: string;
+  };
+  const onSubmit: SubmitHandler<submitData> = async (data: submitData) => {
     setIsLoading(true);
-    if (data.photo !== "") {
+    if (data.photo !== null) {
       const storageRef = ref(
         storage,
         `photos/${authDetails.uid}-profilephoto.png`
@@ -110,6 +118,14 @@ const Profile = () => {
         console.log(error, "error");
       });
   };
+  //   sample deletecloudinary response - https://cloudinary.com/documentation/admin_api#delete_resources
+  // {
+  //     "deleted": {
+  //         "image1": "deleted",
+  //         "image2": "deleted"
+  //     },
+  //     "partial": false
+  // }
   const { mutate: deleteCloudinaryMutation } = useMutation({
     mutationFn: (data) => {
       // console.log("mutation data", data);
@@ -133,6 +149,7 @@ const Profile = () => {
     },
   });
   const deletePictureHandler = () => {
+    console.log("delete running");
     // fetch public ids from firebase
     const DBRef = dbRef(DB);
 
@@ -140,9 +157,8 @@ const Profile = () => {
       // console.log(snapshot, "snapshot");
       if (snapshot.exists()) {
         const data = snapshot.val();
-        // console.log(data, "data snapshot");
+        console.log(data, "data snapshot");
         const publicIds = Object.values(data).map((item) => item.publicId);
-        deleteCloudinaryMutation({ publicId: publicIds });
       } else {
         console.log("No data available");
       }
@@ -152,7 +168,7 @@ const Profile = () => {
     //   const userData = snapshot.val();
     //   console.log("userData", userData);
     // });
-    // deleteCloudinaryMutation({ publicId });
+    deleteCloudinaryMutation({ publicId });
   };
   return (
     <div className="w-[60%] mx-auto  ">
@@ -181,9 +197,12 @@ const Profile = () => {
                     hidden
                     accept="image/*"
                     type="file"
-                    onChange={(e) => {
-                      field.onChange(e.target.files[0]);
-                      handlePhotoInput(e);
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const selectedFiles = e.target.files;
+                      if (selectedFiles && selectedFiles.length > 0) {
+                        field.onChange(selectedFiles[0]);
+                        handlePhotoInput(e);
+                      }
                     }}
                   />
                 </FormControl>
