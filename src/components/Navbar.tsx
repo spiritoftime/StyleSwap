@@ -28,7 +28,7 @@ const Navbar = () => {
   const landingPageItems = [
     {
       title: "Features",
-      href: "`${window.location.pathname}#features`",
+      href: `${window.location.pathname}#features`,
       disabled: false,
     },
     { title: "Transform", href: "/playground", disabled: false },
@@ -49,52 +49,34 @@ const Navbar = () => {
         </Link>
         {homePageMatch && (
           <div className="items-center hidden gap-6 md:flex">
-            <a
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-              href="/#features"
-            >
-              Features
-            </a>
-            <Link
-              to="/playground"
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-            >
-              Transform
-            </Link>
-            <a
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-              href="/#FAQ"
-            >
-              FAQ
-            </a>
+            {landingPageItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.disabled ? "#" : item.href}
+                className={cn(
+                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
+                  item.disabled && "cursor-not-allowed opacity-60"
+                )}
+              >
+                {item.title}
+              </Link>
+            ))}
           </div>
         )}
         {!homePageMatch && (
-          <div className="items-center hidden gap-6 md:flex ">
-            <Link
-              to="/playground"
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-            >
-              Transform
-            </Link>
-            <Link
-              to="/collage"
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-            >
-              Collage
-            </Link>
-            <Link
-              to="/ama"
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-            >
-              AMA
-            </Link>
-            <Link
-              to="/credits"
-              className="flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60"
-            >
-              Buy Credits
-            </Link>
+          <div className="items-center hidden gap-6 md:flex">
+            {otherPageItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.disabled ? "#" : item.href}
+                className={cn(
+                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
+                  item.disabled && "cursor-not-allowed opacity-60"
+                )}
+              >
+                {item.title}
+              </Link>
+            ))}
           </div>
         )}
       </div>
