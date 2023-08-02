@@ -43,7 +43,12 @@ import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { deleteImages } from "./services/upload";
 import { Toaster } from "./ui/toaster";
-
+interface UploadedImage {
+  extension: string;
+  fileName: string;
+  photoURL: string;
+  publicId: string;
+}
 const Profile = () => {
   const { authDetails } = useAppContext();
 
@@ -156,7 +161,7 @@ const Profile = () => {
     get(child(DBRef, `uploadedImages/${authDetails.uid}`)).then((snapshot) => {
       // console.log(snapshot, "snapshot");
       if (snapshot.exists()) {
-        const data = snapshot.val();
+        const data = snapshot.val() as { [key: string]: UploadedImage };
         console.log(data, "data snapshot");
         const publicIds = Object.values(data).map((item) => item.publicId);
         deleteCloudinaryMutation({ publicId: publicIds });

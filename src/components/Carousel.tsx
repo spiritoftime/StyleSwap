@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+type ImagesArray = string[];
+interface CarouselProps {
+  images: ImagesArray;
+}
 
-const Carousel = ({ images }) => {
+const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -17,7 +21,7 @@ const Carousel = ({ images }) => {
 
   return (
     <div className="relative w-full h-64 sm:h-96">
-      {images.map((image, index) => (
+      {images.map((image, index: number) => (
         <div
           key={index}
           className={`absolute top-0 left-0 w-full sm:h-full transition-opacity duration-500 ease-in-out ${
