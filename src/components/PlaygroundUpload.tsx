@@ -69,10 +69,10 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     });
   };
   return (
-    <div className="flex items-center justify-between gap-8">
+    <div className="flex flex-col items-center justify-between gap-8 sm:flex-row ablublu">
       <form onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 ">
             <Label className="whitespace-nowrap" htmlFor="upload-url">
               Upload By URL:
             </Label>
@@ -84,7 +84,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
           </div>
           <CustomSeparator />
           <div className="flex items-center">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-4 ">
               <Label className="whitespace-nowrap" htmlFor="upload-img">
                 Upload By File:
               </Label>

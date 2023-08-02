@@ -33,7 +33,7 @@ const PlayGround = () => {
   const [tab, setTab] = useState("upload-image");
   const [fileName, setFileName] = useState("");
   return (
-    <div className="flex flex-col gap-8 mx-12">
+    <div className="flex flex-col gap-8 mx-6 sm:mx-12">
       <div className="flex items-center gap-4">
         <h2 className=" font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
           Playground
