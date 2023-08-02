@@ -37,18 +37,26 @@ const PersonalPictures = () => {
   useEffect(() => {
     const db = getDatabase();
     const uploadedImagesRef = ref(db, "uploadedImages/" + userId);
-
+    const transformedImagesRef = ref(db, "transformedImages/" + userId);
     const handleDataChange = (snapshot) => {
       const data = snapshot.val();
       setUploadedImages(Object.values(data));
-      console.log(data);
     };
 
+    const handleTransformedChange = (snapshot) => {
+      const data = snapshot.val();
+      setTransformedImages(Object.values(data));
+    };
     const unsubscribe = onValue(uploadedImagesRef, handleDataChange);
+    const unsubscribeTransformed = onValue(
+      transformedImagesRef,
+      handleTransformedChange
+    );
 
     // Clean up the event listener when the component unmounts
     return () => {
       unsubscribe();
+      unsubscribeTransformed();
     };
   }, [userId]); // Run the effect whenever the userId changes
 
@@ -86,12 +94,15 @@ const PersonalPictures = () => {
             <CardHeader>
               <CardTitle>Transformed Images</CardTitle>
               <CardDescription>
-                Make your custom image! Type what you want to replace and what
-                to replace with. Click the info icon at playground header for
-                more info.
+                View all your transformed images. Click any of them to open it
+                in a new tab for downloading.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">Hii </CardContent>
+            <CardContent className="space-y-2">
+              {transformedImages && (
+                <MasonryGrid uploadedImages={transformedImages} />
+              )}
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
