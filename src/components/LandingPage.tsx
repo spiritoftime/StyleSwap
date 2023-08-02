@@ -1,4 +1,3 @@
-import React from "react";
 import { Toaster } from "./ui/toaster";
 import firstImage from "../assets/image-1.png";
 import secondImage from "../assets/image-2.png";

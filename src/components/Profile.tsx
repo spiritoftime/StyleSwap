@@ -59,7 +59,7 @@ const Profile = () => {
   const { toast } = useToast();
   const DB = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
     authDetails && authDetails.photoURL
   );
@@ -84,8 +84,8 @@ const Profile = () => {
   type submitData = {
     email: string;
     displayName: string;
-    photo?: File | null;
-    photoURL: string;
+    photo?: File | null | Blob | Uint8Array | ArrayBuffer;
+    photoURL: string | null;
   };
   const onSubmit: SubmitHandler<submitData> = async (data: submitData) => {
     setIsLoading(true);

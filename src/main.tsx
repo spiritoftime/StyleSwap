@@ -1,5 +1,4 @@
 import React from "react";
-import { database } from "@/firebase.tsx";
 
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";

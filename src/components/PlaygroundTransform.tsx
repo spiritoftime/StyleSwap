@@ -1,9 +1,9 @@
-import  { useState } from "react";
+import { useState } from "react";
 import dummy from "@/assets/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useMutation,  } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAppContext } from "@/context/appContext";
 import { getDatabase, push, ref, set } from "firebase/database";
 import { transformImage } from "./services/transform";
@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
 const PlaygroundTransform = ({ fileName }) => {
   const [replaceWith, setReplaceWith] = useState("");
   const [toReplace, setToReplace] = useState("");
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const db = getDatabase();
@@ -21,28 +21,27 @@ const PlaygroundTransform = ({ fileName }) => {
     authDetails: { uid: userId },
   } = useAppContext();
   const [error, setError] = useState("");
-  const {  mutate: transformCloudinaryMutation } =
-    useMutation({
-      mutationFn: ({ fileName, prompt }) => {
-        return transformImage(userId, fileName, prompt);
-      },
-      onSuccess: (cloudinaryData:string) => {
-        const getImageUrlFromImageElementString = (imageElementString:string) => {
-          const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
-          const match = srcRegex.exec(imageElementString);
-          return match ? match[1] : null;
-        };
-        const url = getImageUrlFromImageElementString(cloudinaryData);
-        setPreview(url);
-        const transformedImageRef = push(
-          ref(db, `transformedImages/${userId}`)
-        );
-        set(transformedImageRef, { photoURL: url });
+  const { mutate: transformCloudinaryMutation } = useMutation({
+    mutationFn: ({ fileName, prompt }) => {
+      return transformImage(userId, fileName, prompt);
+    },
+    onSuccess: (cloudinaryData: string) => {
+      const getImageUrlFromImageElementString = (
+        imageElementString: string
+      ) => {
+        const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
+        const match = srcRegex.exec(imageElementString);
+        return match ? match[1] : null;
+      };
+      const url = getImageUrlFromImageElementString(cloudinaryData);
+      setPreview(url);
+      const transformedImageRef = push(ref(db, `transformedImages/${userId}`));
+      set(transformedImageRef, { photoURL: url });
 
-        setIsLoading(false);
-      },
-    });
-  const submitHandler = async (e) => {
+      setIsLoading(false);
+    },
+  });
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     if (!toReplace || !replaceWith) setError("Please fill in both fields");

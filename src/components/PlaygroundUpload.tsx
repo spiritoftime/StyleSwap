@@ -70,7 +70,6 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
     const formData = new FormData();
     if (image) {
       formData.append("file", image);
-      // const imageuri = await convertImageToBaseUri(image);
     } else if (url) {
       formData.append("file", url);
     }
