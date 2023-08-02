@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Pagination from "./Pagination";
 
 const MasonryGrid = ({ uploadedImages }) => {
-  const [numPages, setNumPages] = useState(
-    Math.ceil(uploadedImages.length / 6)
-  );
-  console.log(numPages, "numPages");
+  const numPages = Math.ceil(uploadedImages.length / 6);
+
+  // console.log(numPages, "numPages");
   const [currentPage, setCurrentPage] = useState(0);
   const groupImages = (images, groupSize) => {
     const grouped = [];

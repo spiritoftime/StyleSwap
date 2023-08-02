@@ -1,10 +1,5 @@
-import { useState } from "react";
-
 import "./App.css";
 
-import { Button } from "./components/ui/button";
-
-import { useAppContext } from "./context/appContext";
 import { Route, Routes } from "react-router";
 import Auth from "./components/Auth";
 import PlayGround from "@/components/PlayGround";
@@ -15,7 +10,6 @@ import Profile from "./components/Profile";
 import useCheckAuth from "./custom_hooks/useCheckAuth";
 import PersonalPictures from "./components/PersonalPictures";
 function App() {
-  const { authDetails } = useAppContext();
   useCheckAuth();
 
   return (

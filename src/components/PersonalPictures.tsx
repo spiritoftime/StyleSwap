@@ -1,17 +1,3 @@
-import { Info } from "lucide-react";
-import { Toaster } from "./ui/toaster";
-
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 
@@ -61,7 +47,7 @@ const PersonalPictures = () => {
   }, [userId]); // Run the effect whenever the userId changes
 
   return (
-    <div className="flex flex-col gap-8 mx-12">
+    <div className="flex flex-col gap-8 m-12">
       <Tabs
         value={tab}
         onValueChange={setTab}

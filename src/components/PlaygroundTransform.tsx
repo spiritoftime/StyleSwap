@@ -16,7 +16,7 @@ const PlaygroundTransform = ({ fileName }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const db = getDatabase();
-  console.log(preview, "preview");
+  // console.log(preview, "preview");
   const {
     authDetails: { uid: userId },
   } = useAppContext();

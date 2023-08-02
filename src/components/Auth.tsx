@@ -60,7 +60,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        console.log(user, "user");
+        // console.log(user, "user");
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
@@ -137,7 +137,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
       });
   };
   const onSubmit = (data) => {
-    console.log(data, "data");
+    // console.log(data, "data");
     if (isSignUp) {
       SignUpWithEmailAndPassword(data.email, data.password);
     } else {

@@ -29,7 +29,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
       },
       onSuccess: (cloudinaryData) => {
         const { secure_url, public_id, format } = cloudinaryData;
-        console.log(cloudinaryData, "cloudinaryData");
+        // console.log(cloudinaryData, "cloudinaryData");
         const fileName = `${
           secure_url.split("/")[secure_url.split("/").length - 1]
         }`;

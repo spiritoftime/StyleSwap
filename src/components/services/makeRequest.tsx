@@ -1,4 +1,8 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+interface ApiError {
+  error: string;
+  // You can add more fields as needed (e.g., errorCode, message, etc.).
+}
 export const axiosInstance = axios.create({
   baseURL:
     import.meta.env.VITE_ENV === "production"
@@ -7,9 +11,12 @@ export const axiosInstance = axios.create({
   // withCredentials: true,
 });
 
-export function makeRequest(url, options) {
+export function makeRequest<T>(
+  url: string,
+  options?: AxiosRequestConfig
+): Promise<T> {
   return axiosInstance(url, options)
-    .then((res) => {
+    .then((res: AxiosResponse<T>) => {
       // if (!res.headers.authorization) return;
 
       // const headerAccessToken = res.headers.authorization.split(" ")[1];
@@ -20,7 +27,7 @@ export function makeRequest(url, options) {
 
       return res.data;
     })
-    .catch((err) => {
+    .catch((err: AxiosError<ApiError>) => {
       return Promise.reject(err?.response?.data?.error ?? "Error");
     });
 }

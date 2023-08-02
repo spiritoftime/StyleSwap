@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import {
   getDatabase,
@@ -6,9 +6,7 @@ import {
   child,
   remove,
   get,
-  onChildAdded,
-  onChildChanged,
-  onChildRemoved,
+
 } from "firebase/database";
 
 import { storage } from "../firebase";
@@ -67,7 +65,7 @@ const Profile = () => {
       });
       setPhotoPreviewLink(authDetails.photoURL);
     }
-  }, [authDetails]);
+  }, [authDetails,form]);
   const handlePhotoInput = (event) => {
     // Create a preview of the file before uploading it onto database
     setPhotoPreviewLink(URL.createObjectURL(event.target.files[0]));
@@ -81,14 +79,12 @@ const Profile = () => {
     mode: "onChange",
   });
   const {
-    control,
-    watch,
-    getValues,
-    unregister,
+
+
     formState: { errors, isValid },
   } = form;
   const onSubmit = async (data) => {
-    console.log(data, "data");
+    // console.log(data, "data");
     setIsLoading(true);
     if (data.photo !== "") {
       const storageRef = ref(
@@ -107,7 +103,7 @@ const Profile = () => {
     } else data.photoURL = authDetails.photoURL;
     updateProfile(authDetails, data)
       .then(() => {
-        console.log("success");
+        // console.log("success");
         setIsLoading(false);
         navigate("/");
         toast({
@@ -119,10 +115,10 @@ const Profile = () => {
         console.log(error, "error");
       });
   };
-  const { data: cloudinaryData, mutate: deleteCloudinaryMutation } =
+  const {  mutate: deleteCloudinaryMutation } =
     useMutation({
       mutationFn: (data) => {
-        console.log("mutation data", data);
+        // console.log("mutation data", data);
         return deleteImages(authDetails.uid, data);
       },
       onSuccess: (cloudinaryData) => {
@@ -131,7 +127,7 @@ const Profile = () => {
         const userRef = dbRef(DB, "uploadedImages/" + authDetails.uid);
         remove(userRef)
           .then(() => {
-            console.log("Data removed successfully.");
+            // console.log("Data removed successfully.");
             toast({
               description: "Your photos have been removed",
             });
@@ -147,10 +143,10 @@ const Profile = () => {
     const DBRef = dbRef(DB);
 
     get(child(DBRef, `uploadedImages/${authDetails.uid}`)).then((snapshot) => {
-      console.log(snapshot, "snapshot");
+      // console.log(snapshot, "snapshot");
       if (snapshot.exists()) {
         const data = snapshot.val();
-        console.log(data, "data snapshot");
+        // console.log(data, "data snapshot");
         const publicIds = Object.values(data).map((item) => item.publicId);
         deleteCloudinaryMutation({ publicId: publicIds });
       } else {

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
   const pagesToShow = 5;
-  console.log(currentPage, "currentPage");
   const [paginationArray, setPaginationArray] = useState<number[]>([]);
   useEffect(() => {
     const newPaginationArray = Array.from(
@@ -11,6 +10,8 @@ const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
     );
     setPaginationArray(newPaginationArray);
   }, [currentPage, numPages, pagesToShow]);
+  // console.log(paginationArray, "paginationArray");
+
   return (
     <div className="flex flex-col items-center gap-4">
       <span className="text-sm text-gray-700 dark:text-gray-400">
@@ -25,7 +26,7 @@ const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
       <nav aria-label="Page navigation example">
         <ul className="inline-flex -space-x-px text-sm">
           {currentPage > 0 && (
-            <li onClick={() => setCurrentPage((prev) => prev - 1)}>
+            <li onClick={() => setCurrentPage((prev: number) => prev - 1)}>
               <a
                 href="#"
                 className="flex items-center justify-center h-8 px-3 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -35,7 +36,9 @@ const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
             </li>
           )}
           {paginationArray.map((pageNumber, index) => {
+            console.log(pageNumber, "number", numPages, "numpages");
             if (pageNumber >= 0 && pageNumber < numPages) {
+              // console.log("wtf");
               return (
                 <li
                   onClick={() => {
@@ -68,7 +71,7 @@ const Pagination = ({ numPages, currentPage, setCurrentPage }) => {
           {currentPage < numPages - 1 && (
             <li>
               <a
-                onClick={() => setCurrentPage((prev) => prev + 1)}
+                onClick={() => setCurrentPage((prev: number) => prev + 1)}
                 href="#"
                 className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
