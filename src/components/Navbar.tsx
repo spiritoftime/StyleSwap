@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../assets/logo-removebg-preview.png";
 import { Link, useNavigate, useMatch } from "react-router-dom";
 import {
@@ -16,24 +16,25 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MobileNav from "./mobileNav";
 const Navbar = () => {
-  const { authDetails } = useAppContext();
+  const { authDetails, setAuthDetails } = useAppContext();
+
   const navigate = useNavigate();
   const otherPageItems = [
     { title: "Transform", href: "/playground", disabled: false },
-    { title: "Collage", href: "/collage", disabled: false },
-    { title: "AMA", href: "/ama", disabled: false },
-    { title: "Buy Credits", href: "/credits", disabled: false },
+    { title: "Collage", href: "/collage", disabled: true },
+    { title: "AMA", href: "/ama", disabled: true },
+    { title: "Buy Credits", href: "/credits", disabled: true },
   ];
   const landingPageItems = [
     {
       title: "Features",
-      href: `${window.location.pathname}#features`,
+      href: `/#features`,
       disabled: false,
     },
     { title: "Transform", href: "/playground", disabled: false },
-    { title: "Collage", href: "/collage", disabled: false },
-    { title: "AMA", href: "/ama", disabled: false },
-    { title: "Buy Credits", href: "/credits", disabled: false },
+    { title: "Collage", href: "/collage", disabled: true },
+    { title: "AMA", href: "/ama", disabled: true },
+    { title: "Buy Credits", href: "/credits", disabled: true },
   ];
   const homePageMatch = useMatch("/");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -53,7 +54,7 @@ const Navbar = () => {
                 key={index}
                 to={item.disabled ? "#" : item.href}
                 className={cn(
-                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
+                  "flex items-center gap-2 text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
                   item.disabled && "cursor-not-allowed opacity-60"
                 )}
               >
@@ -63,13 +64,13 @@ const Navbar = () => {
           </div>
         )}
         {!homePageMatch && (
-          <div className="items-center hidden gap-6 md:flex">
+          <div className="gap-6 items-centerhidden md:flex">
             {otherPageItems.map((item, index) => (
               <Link
                 key={index}
                 to={item.disabled ? "#" : item.href}
                 className={cn(
-                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
+                  "flex  gap-2  items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm text-foreground/60",
                   item.disabled && "cursor-not-allowed opacity-60"
                 )}
               >
@@ -118,7 +119,12 @@ const Navbar = () => {
               <DropdownMenuItem onClick={() => navigate("/pictures")}>
                 View pictures
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => signOut(auth)}>
+              <DropdownMenuItem
+                onClick={() => {
+                  signOut(auth);
+                  setAuthDetails({});
+                }}
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

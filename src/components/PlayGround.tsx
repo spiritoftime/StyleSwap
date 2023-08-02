@@ -33,7 +33,7 @@ const PlayGround = () => {
   const [tab, setTab] = useState("upload-image");
   const [fileName, setFileName] = useState("");
   return (
-    <div className="flex flex-col gap-8 mx-6 sm:mx-12">
+    <div className="flex flex-col gap-8 m-6 sm:mx-16">
       <div className="flex items-center gap-4">
         <h2 className=" font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
           Playground
@@ -50,15 +50,15 @@ const PlayGround = () => {
               <DialogDescription>How to get started</DialogDescription>
             </DialogHeader>
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <h4 className="text-lg font-semibold leading-none tracking-tight">
+              <div className="flex flex-col gap-4">
+                <h4 className="text-lg font-semibold leading-none ">
                   {
-                    "1) Upload an image - you can choose to upload an image or paste a url link containing the image"
+                    "1) Upload an image - you can choose to upload an image or paste a url link containing the image. Please upload a picture without any distractions, as the ai is still unstable!"
                   }
                   <img src={firstImage} />
                 </h4>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4">
                 <h4 className="text-lg font-semibold leading-none tracking-tight">
                   {"2) Apply your transformation to see the magic!"}
                 </h4>

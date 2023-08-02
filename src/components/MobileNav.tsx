@@ -1,8 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo-removebg-preview.png";
 import { cn } from "@/lib/utils";
-
+import { Badge } from "@/components/ui/badge";
 const MobileNav = ({ navItems }) => {
   return (
     <div

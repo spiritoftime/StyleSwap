@@ -8,7 +8,7 @@ import Features from "./Features";
 // #111724
 const LandingPage = () => {
   return (
-    <div className="flex flex-col mx-6 sm:mx-12">
+    <div className="flex flex-col mx-6 sm:mx-20">
       <section className="flex gap-8 pt-16">
         <div className="w-[50%]">
           <h1 className="text-3xl font-heading sm:text-5xl md:text-6xl text-[#0f172a] lg:text-7xl">
