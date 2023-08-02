@@ -4,17 +4,15 @@ import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import CustomSeparator from "./CustomSeparator";
 import { Button } from "./ui/button";
-import { uploadData } from "./services/upload";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { uploadImage } from "./services/upload";
 import { useAppContext } from "@/context/appContext";
-import { child, get, getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 import { Loader2 } from "lucide-react";
 
 const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const db = getDatabase();
 
@@ -22,7 +20,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     authDetails: { uid: userId },
   } = useAppContext();
   const [error, setError] = useState("");
-  const { data: cloudinaryData, mutate: uploadCloudinaryMutation } =
+  const {  mutate: uploadCloudinaryMutation } =
     useMutation({
       mutationFn: ({ userId, formData }) => {
         return uploadImage(userId, formData);
@@ -62,7 +60,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
     } else if (url) {
       formData.append("file", url);
     }
-    const obj = { userId, formData };
+
     uploadCloudinaryMutation({
       userId,
       formData,

@@ -6,7 +6,6 @@ import {
   child,
   remove,
   get,
-
 } from "firebase/database";
 
 import { storage } from "../firebase";
@@ -46,6 +45,14 @@ import { Toaster } from "./ui/toaster";
 const Profile = () => {
   const { authDetails } = useAppContext();
 
+  const form = useForm({
+    resolver: zodResolver(profileZod),
+    defaultValues: {
+      email: "",
+      displayName: "",
+    },
+    mode: "onChange",
+  });
   const { toast } = useToast();
   const DB = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
@@ -65,24 +72,12 @@ const Profile = () => {
       });
       setPhotoPreviewLink(authDetails.photoURL);
     }
-  }, [authDetails,form]);
+  }, [authDetails, form]);
   const handlePhotoInput = (event) => {
     // Create a preview of the file before uploading it onto database
     setPhotoPreviewLink(URL.createObjectURL(event.target.files[0]));
   };
-  const form = useForm({
-    resolver: zodResolver(profileZod),
-    defaultValues: {
-      email: "",
-      displayName: "",
-    },
-    mode: "onChange",
-  });
-  const {
 
-
-    formState: { errors, isValid },
-  } = form;
   const onSubmit = async (data) => {
     // console.log(data, "data");
     setIsLoading(true);
@@ -115,29 +110,28 @@ const Profile = () => {
         console.log(error, "error");
       });
   };
-  const {  mutate: deleteCloudinaryMutation } =
-    useMutation({
-      mutationFn: (data) => {
-        // console.log("mutation data", data);
-        return deleteImages(authDetails.uid, data);
-      },
-      onSuccess: (cloudinaryData) => {
-        console.log(cloudinaryData, "delete cloudinaryData");
-        // delete firebase records
-        const userRef = dbRef(DB, "uploadedImages/" + authDetails.uid);
-        remove(userRef)
-          .then(() => {
-            // console.log("Data removed successfully.");
-            toast({
-              description: "Your photos have been removed",
-            });
-          })
-          .catch((error) => {
-            console.error("Error removing data:", error);
+  const { mutate: deleteCloudinaryMutation } = useMutation({
+    mutationFn: (data) => {
+      // console.log("mutation data", data);
+      return deleteImages(authDetails.uid, data);
+    },
+    onSuccess: (cloudinaryData) => {
+      console.log(cloudinaryData, "delete cloudinaryData");
+      // delete firebase records
+      const userRef = dbRef(DB, "uploadedImages/" + authDetails.uid);
+      remove(userRef)
+        .then(() => {
+          // console.log("Data removed successfully.");
+          toast({
+            description: "Your photos have been removed",
           });
-        setIsLoading(false);
-      },
-    });
+        })
+        .catch((error) => {
+          console.error("Error removing data:", error);
+        });
+      setIsLoading(false);
+    },
+  });
   const deletePictureHandler = () => {
     // fetch public ids from firebase
     const DBRef = dbRef(DB);
