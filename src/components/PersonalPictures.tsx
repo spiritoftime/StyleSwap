@@ -75,7 +75,9 @@ const PersonalPictures = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <MasonryGrid uploadedImages={uploadedImages} />
+              {uploadedImages && (
+                <MasonryGrid uploadedImages={uploadedImages} />
+              )}
             </CardContent>
           </Card>
         </TabsContent>
