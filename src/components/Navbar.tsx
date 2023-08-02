@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import logo from "../assets/logo-removebg-preview.png";
 import { Link, useNavigate, useMatch } from "react-router-dom";
-import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,7 +38,7 @@ const Navbar = () => {
   const homePageMatch = useMatch("/");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   return (
-    <nav className="flex items-center justify-between py-8 mx-6 sm:mx-12">
+    <nav className="flex items-center justify-between py-8 mx-6 border-b border-black sm:mx-12">
       <div className="items-center hidden gap-6 md:flex ">
         <Link to="/">
           <div className="flex flex-col items-center ">
