@@ -9,8 +9,22 @@ import { uploadImage } from "./services/upload";
 import { useAppContext } from "@/context/appContext";
 import { getDatabase, ref, set } from "firebase/database";
 import { Loader2 } from "lucide-react";
-
-const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
+type PlaygroundUploadProps = {
+  setEnableTransform: React.Dispatch<React.SetStateAction<boolean>>;
+  setTab: React.Dispatch<React.SetStateAction<string>>;
+  setFileName: React.Dispatch<React.SetStateAction<string>>;
+};
+interface CloudinaryData {
+  secure_url: string;
+  public_id: string;
+  format: string;
+  [key: string]: any; // Allow for additional keys of any type
+}
+const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
+  setEnableTransform,
+  setTab,
+  setFileName,
+}) => {
   const [url, setUrl] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +39,8 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
       return uploadImage(userId, formData);
     },
     onSuccess: (cloudinaryData) => {
-      const { secure_url, public_id, format } = cloudinaryData;
+      const { secure_url, public_id, format }: CloudinaryData =
+        cloudinaryData as CloudinaryData;
       // console.log(cloudinaryData, "cloudinaryData");
       const fileName = `${
         secure_url.split("/")[secure_url.split("/").length - 1]
@@ -43,7 +58,7 @@ const PlaygroundUpload = ({ setEnableTransform, setTab, setFileName }) => {
       setFileName(public_id + extension);
     },
   });
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setIsLoading(true);
     if (!image && !url) setError("Please upload an image or enter an url");

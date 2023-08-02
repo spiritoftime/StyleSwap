@@ -29,7 +29,7 @@ import PlaygroundUpload from "./PlaygroundUpload";
 import PlaygroundTransform from "./PlaygroundTransform";
 const PlayGround = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [enableTransform, setEnableTransform] = useState(false);
+  const [enableTransform, setEnableTransform] = useState<boolean>(false);
   const [tab, setTab] = useState("upload-image");
   const [fileName, setFileName] = useState("");
   return (

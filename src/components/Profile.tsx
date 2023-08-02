@@ -159,6 +159,7 @@ const Profile = () => {
         const data = snapshot.val();
         console.log(data, "data snapshot");
         const publicIds = Object.values(data).map((item) => item.publicId);
+        deleteCloudinaryMutation({ publicId: publicIds });
       } else {
         console.log("No data available");
       }
@@ -168,7 +169,6 @@ const Profile = () => {
     //   const userData = snapshot.val();
     //   console.log("userData", userData);
     // });
-    deleteCloudinaryMutation({ publicId });
   };
   return (
     <div className="w-[60%] mx-auto  ">

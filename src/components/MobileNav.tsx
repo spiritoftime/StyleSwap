@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo-removebg-preview.png";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-const MobileNav = ({ navItems }) => {
+type NavItem = {
+  title: string;
+  href: string;
+  disabled: boolean;
+};
+type NavItems = NavItem[];
+interface MobileNavProps {
+  navItems: NavItems; // Define the prop type as NavItems
+}
+const MobileNav = ({ navItems }: MobileNavProps) => {
   return (
     <div
       className={cn(
