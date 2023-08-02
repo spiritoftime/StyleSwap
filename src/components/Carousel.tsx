@@ -26,7 +26,7 @@ const Carousel = ({ images }) => {
         >
           <img
             src={image}
-            className="object-cover w-full h-full"
+            className="object-contain w-full h-full"
             alt={`Slide ${index + 1}`}
           />
         </div>
