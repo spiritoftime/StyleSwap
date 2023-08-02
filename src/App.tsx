@@ -13,6 +13,7 @@ import LandingPage from "./components/LandingPage";
 import AppLayout from "./components/AppLayout";
 import Profile from "./components/Profile";
 import useCheckAuth from "./custom_hooks/useCheckAuth";
+import PersonalPictures from "./components/PersonalPictures";
 function App() {
   const { authDetails } = useAppContext();
   useCheckAuth();
@@ -38,6 +39,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/pictures"
+          element={
+            <ProtectedRoute>
+              <PersonalPictures />
             </ProtectedRoute>
           }
         ></Route>

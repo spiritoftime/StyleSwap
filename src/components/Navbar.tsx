@@ -46,7 +46,7 @@ const Navbar = () => {
       </div>
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
-          <p className=" font-semibold">
+          <p className="font-semibold ">
             {convertToTitleCase(authDetails.displayName)}
           </p>
           <DropdownMenu>
@@ -62,6 +62,9 @@ const Navbar = () => {
             <DropdownMenuContent className="w-56">
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/pictures")}>
+                View pictures
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => signOut(auth)}>
                 Logout
