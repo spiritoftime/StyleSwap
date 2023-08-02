@@ -8,16 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
 import { useAppContext } from "@/context/appContext";
 import { ProfileIcon } from "./ProfileIcon";
 import { signOut } from "firebase/auth";
@@ -25,14 +15,26 @@ import { auth } from "../firebase";
 import { convertToTitleCase } from "@/utils/convertText";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import MobileNav from "./mobileNav";
 const Navbar = () => {
   const { authDetails } = useAppContext();
   const navigate = useNavigate();
-  const items = [
-    { title: "Features", href: "/#features", disabled: false },
-    { title: "Pricing", href: "/pricing", disabled: false },
-    { title: "Blog", href: "/blog", disabled: false },
-    { title: "Documentation", href: "/docs", disabled: false },
+  const otherPageItems = [
+    { title: "Transform", href: "/playground", disabled: false },
+    { title: "Collage", href: "/collage", disabled: false },
+    { title: "AMA", href: "/ama", disabled: false },
+    { title: "Buy Credits", href: "/credits", disabled: false },
+  ];
+  const landingPageItems = [
+    {
+      title: "Features",
+      href: "`${window.location.pathname}#features`",
+      disabled: false,
+    },
+    { title: "Transform", href: "/playground", disabled: false },
+    { title: "Collage", href: "/collage", disabled: false },
+    { title: "AMA", href: "/ama", disabled: false },
+    { title: "Buy Credits", href: "/credits", disabled: false },
   ];
   const homePageMatch = useMatch("/");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -40,7 +42,7 @@ const Navbar = () => {
     <nav className="flex items-center justify-between py-8 mx-6 sm:mx-12">
       <div className="items-center hidden gap-6 md:flex ">
         <Link to="/">
-          <div className="items-center gap-4 ">
+          <div className="flex flex-col items-center ">
             <img className="h-[50px]" src={logo} alt="StyleSwap Logo" />
             <span className="font-bold">StyleSwap</span>
           </div>
@@ -108,32 +110,10 @@ const Navbar = () => {
         <span className="font-bold">Menu</span>
       </button>
       {!homePageMatch && showMobileMenu && (
-        <div
-          className={cn(
-            "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden"
-          )}
-        >
-          <div className="relative z-20 grid gap-6 p-4 rounded-md shadow-md bg-popover text-popover-foreground">
-            <Link to="/" className="flex items-center space-x-2">
-              <img className="h-[24px]" src={logo} alt="StyleSwap Logo" />
-              <span className="font-bold">StyleSwap</span>
-            </Link>
-            <nav className="grid grid-flow-row text-sm auto-rows-max">
-              {items.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.disabled ? "#" : item.href}
-                  className={cn(
-                    "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
-                    item.disabled && "cursor-not-allowed opacity-60"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
+        <MobileNav navItems={otherPageItems} />
+      )}
+      {homePageMatch && showMobileMenu && (
+        <MobileNav navItems={landingPageItems} />
       )}
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
