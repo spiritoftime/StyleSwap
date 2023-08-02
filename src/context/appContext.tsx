@@ -6,6 +6,7 @@ import { User as FirebaseUser } from "firebase/auth";
 interface AppContextProps {
   children: JSX.Element;
 }
+
 const AppContext = React.createContext({});
 const AppProvider: React.FC<AppContextProps> = ({ children }) => {
   const { toast } = useToast();
