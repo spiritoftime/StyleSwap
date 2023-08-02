@@ -92,10 +92,16 @@ const Navbar = () => {
         <span className="font-bold">Menu</span>
       </button>
       {!homePageMatch && showMobileMenu && (
-        <MobileNav navItems={otherPageItems} />
+        <MobileNav
+          setShowMobileMenu={setShowMobileMenu}
+          navItems={otherPageItems}
+        />
       )}
       {homePageMatch && showMobileMenu && (
-        <MobileNav navItems={landingPageItems} />
+        <MobileNav
+          setShowMobileMenu={setShowMobileMenu}
+          navItems={landingPageItems}
+        />
       )}
       {authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">

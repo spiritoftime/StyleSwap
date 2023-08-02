@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo-removebg-preview.png";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-const MobileNav = ({ navItems }) => {
+const MobileNav = ({ navItems, setShowMobileMenu }) => {
   return (
     <div
       className={cn(
@@ -18,6 +18,7 @@ const MobileNav = ({ navItems }) => {
           {navItems.map((item, index) => (
             <Link
               key={index}
+              onClick={() => setShowMobileMenu(false)}
               to={item.disabled ? "#" : item.href}
               className={cn(
                 "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
