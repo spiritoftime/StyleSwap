@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import dummy from "../assets/dummy.jpg";
+import dummy from "../../public/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import CustomSeparator from "./CustomSeparator";
@@ -34,36 +34,32 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
   let userId: string | null = null;
   if (authDetails) userId = authDetails.uid;
   const [error, setError] = useState("");
-  const { mutate: uploadCloudinaryMutation } = useMutation({
-    mutationFn: ({
-      userId,
-      formData,
-    }: {
-      userId: string;
-      formData: FormData;
-    }) => {
+  const { mutate: uploadCloudinaryMutation } = useMutation(
+    ({ userId, formData }: { userId: string; formData: FormData }) => {
       return uploadImage(userId, formData);
     },
-    onSuccess: (cloudinaryData) => {
-      const { secure_url, public_id, format }: CloudinaryData =
-        cloudinaryData as CloudinaryData;
-      console.log(cloudinaryData, "cloudinaryData");
-      const fileName = `${
-        secure_url.split("/")[secure_url.split("/").length - 1]
-      }`;
-      const extension = "." + format;
-      set(ref(db, `uploadedImages/${public_id}`), {
-        fileName: fileName,
-        photoURL: secure_url,
-        publicId: public_id,
-        extension: extension,
-      });
-      setEnableTransform(true);
-      setTab("transform-image");
-      setIsLoading(false);
-      setFileName(public_id + extension);
-    },
-  });
+    {
+      onSuccess: (cloudinaryData) => {
+        const { secure_url, public_id, format }: CloudinaryData =
+          cloudinaryData as CloudinaryData;
+        // console.log(cloudinaryData, "cloudinaryData");
+        const fileName = `${
+          secure_url.split("/")[secure_url.split("/").length - 1]
+        }`;
+        const extension = "." + format;
+        set(ref(db, `uploadedImages/${public_id}`), {
+          fileName: fileName,
+          photoURL: secure_url,
+          publicId: public_id,
+          extension: extension,
+        });
+        setEnableTransform(true);
+        setTab("transform-image");
+        setIsLoading(false);
+        setFileName(public_id + extension);
+      },
+    }
+  );
   const submitHandler = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
