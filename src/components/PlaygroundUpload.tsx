@@ -18,7 +18,7 @@ interface CloudinaryData {
   secure_url: string;
   public_id: string;
   format: string;
-  [key: string]: any; // Allow for additional keys of any type
+  [key: string]: string; // Allow for additional keys of any type
 }
 const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
   setEnableTransform,
@@ -30,12 +30,18 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const db = getDatabase();
 
-  const {
-    authDetails: { uid: userId },
-  } = useAppContext();
+  const { authDetails } = useAppContext();
+  let userId: string | null = null;
+  if (authDetails) userId = authDetails.uid;
   const [error, setError] = useState("");
   const { mutate: uploadCloudinaryMutation } = useMutation({
-    mutationFn: ({ userId, formData }) => {
+    mutationFn: ({
+      userId,
+      formData,
+    }: {
+      userId: string;
+      formData: FormData;
+    }) => {
       return uploadImage(userId, formData);
     },
     onSuccess: (cloudinaryData) => {
@@ -58,7 +64,7 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
       setFileName(public_id + extension);
     },
   });
-  const submitHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const submitHandler = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     if (!image && !url) setError("Please upload an image or enter an url");
@@ -73,11 +79,11 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
     } else if (url) {
       formData.append("file", url);
     }
-
-    uploadCloudinaryMutation({
-      userId,
-      formData,
-    });
+    if (userId)
+      uploadCloudinaryMutation({
+        userId,
+        formData,
+      });
   };
   return (
     <div className="flex flex-col items-center justify-between gap-8 sm:flex-row ablublu">

@@ -1,7 +1,7 @@
 import { makeRequest } from "./makeRequest";
 
 export function transformImage(
-  userId: number,
+  userId: string | null,
   fileName: string,
   effect: string
 ) {

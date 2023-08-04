@@ -17,12 +17,14 @@ const PlaygroundTransform = ({ fileName }: { fileName: string }) => {
 
   const db = getDatabase();
   // console.log(preview, "preview");
-  const {
-    authDetails: { uid: userId },
-  } = useAppContext();
+  const { authDetails } = useAppContext();
+
+  let userId: string | null = null;
+  if (authDetails) userId = authDetails.uid;
   const [error, setError] = useState("");
   const { mutate: transformCloudinaryMutation } = useMutation({
-    mutationFn: ({ fileName, prompt }) => {
+    mutationFn: ({ fileName, prompt }:{  fileName: string,
+      prompt: string}) => {
       return transformImage(userId, fileName, prompt);
     },
     onSuccess: (cloudinaryData: string) => {

@@ -1,12 +1,10 @@
 import { makeRequest } from "./makeRequest";
 type userId = string;
-export type uploadData = {
-  file: string;
-};
-type deleteData = {
+
+export type deleteData = {
   publicId: string[];
 };
-export function uploadImage(userId: userId, data: uploadData) {
+export function uploadImage(userId: userId, data: FormData) {
   return makeRequest(`/uploads/${userId}`, {
     method: "POST",
     data: data,

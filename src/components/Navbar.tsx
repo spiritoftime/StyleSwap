@@ -104,7 +104,7 @@ const Navbar = () => {
               {convertToTitleCase(authDetails.displayName)}
             </p>
           ) : (
-            <p className="font-semibold sm:block">Default Name</p>
+            <p className="font-semibold sm:block">Awesome User</p>
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

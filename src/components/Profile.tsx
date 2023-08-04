@@ -41,7 +41,7 @@ import { profileZod } from "@/utils/profileZod";
 import { useToast } from "./ui/use-toast";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { deleteImages } from "./services/upload";
+import { deleteData, deleteImages } from "./services/upload";
 import { Toaster } from "./ui/toaster";
 interface UploadedImage {
   extension: string;
@@ -51,13 +51,13 @@ interface UploadedImage {
 }
 const Profile = () => {
   const { authDetails } = useAppContext();
-
   const form = useForm({
     resolver: zodResolver(profileZod),
     defaultValues: {
       email: "",
       displayName: "",
       photo: null,
+      photoURL: null,
     },
     mode: "onChange",
   });
@@ -68,15 +68,16 @@ const Profile = () => {
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
     authDetails && authDetails.photoURL
   );
+
   const navigate = useNavigate();
   const handleInputClick = () => {
     inputRef.current && inputRef.current.click();
   };
   useEffect(() => {
-    if (authDetails.uid) {
+    if (authDetails && authDetails.uid) {
       form.reset({
-        email: authDetails.email,
-        displayName: authDetails.displayName,
+        email: authDetails.email!,
+        displayName: authDetails.displayName!,
       });
       setPhotoPreviewLink(authDetails.photoURL);
     }
@@ -89,15 +90,16 @@ const Profile = () => {
   type submitData = {
     email: string;
     displayName: string;
-    photo?: File | null | Blob | Uint8Array | ArrayBuffer;
+    photo?: File | Blob | Uint8Array | ArrayBuffer | null;
     photoURL: string | null;
   };
+
   const onSubmit: SubmitHandler<submitData> = async (data: submitData) => {
     setIsLoading(true);
-    if (data.photo !== null) {
+    if (data.photo) {
       const storageRef = ref(
         storage,
-        `photos/${authDetails.uid}-profilephoto.png`
+        `photos/${authDetails?.uid}-profilephoto.png`
       );
 
       // Upload the photo onto Firebase storage with uploadBytes
@@ -108,20 +110,22 @@ const Profile = () => {
 
       data.photoURL = photoUrl;
       delete data.photo;
-    } else data.photoURL = authDetails.photoURL;
-    updateProfile(authDetails, data)
-      .then(() => {
-        // console.log("success");
-        setIsLoading(false);
-        navigate("/");
-        toast({
-          description: "Profile Information Updated",
+    } else if (authDetails) {
+      data.photoURL = authDetails?.photoURL ?? null;
+      updateProfile(authDetails, data)
+        .then(() => {
+          // console.log("success");
+          setIsLoading(false);
+          navigate("/");
+          toast({
+            description: "Profile Information Updated",
+          });
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          console.log(error, "error");
         });
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.log(error, "error");
-      });
+    }
   };
   //   sample deletecloudinary response - https://cloudinary.com/documentation/admin_api#delete_resources
   // {
@@ -131,15 +135,19 @@ const Profile = () => {
   //     },
   //     "partial": false
   // }
+  type CloudinaryData = {
+    deleted: Record<string, string>;
+    partial: boolean;
+  };
   const { mutate: deleteCloudinaryMutation } = useMutation({
-    mutationFn: (data) => {
+    mutationFn: (data: deleteData) => {
       // console.log("mutation data", data);
-      return deleteImages(authDetails.uid, data);
+      if (authDetails) return deleteImages(authDetails.uid, data);
     },
-    onSuccess: (cloudinaryData) => {
+    onSuccess: (cloudinaryData: CloudinaryData) => {
       console.log(cloudinaryData, "delete cloudinaryData");
       // delete firebase records
-      const userRef = dbRef(DB, "uploadedImages/" + authDetails.uid);
+      const userRef = dbRef(DB, "uploadedImages/" + authDetails?.uid);
       remove(userRef)
         .then(() => {
           // console.log("Data removed successfully.");
@@ -156,24 +164,28 @@ const Profile = () => {
   const deletePictureHandler = () => {
     console.log("delete running");
     // fetch public ids from firebase
-    const DBRef = dbRef(DB);
+    if (authDetails) {
+      const DBRef = dbRef(DB);
 
-    get(child(DBRef, `uploadedImages/${authDetails.uid}`)).then((snapshot) => {
-      // console.log(snapshot, "snapshot");
-      if (snapshot.exists()) {
-        const data = snapshot.val() as { [key: string]: UploadedImage };
-        console.log(data, "data snapshot");
-        const publicIds = Object.values(data).map((item) => item.publicId);
-        deleteCloudinaryMutation({ publicId: publicIds });
-      } else {
-        console.log("No data available");
-      }
-    });
-    // const uploadedImageRef = dbRef(db, "uploadedImages/" + authDetails.uid);
-    // uploadedImageRef.once("value").then((snapshot) => {
-    //   const userData = snapshot.val();
-    //   console.log("userData", userData);
-    // });
+      get(child(DBRef, `uploadedImages/${authDetails.uid}`)).then(
+        (snapshot) => {
+          // console.log(snapshot, "snapshot");
+          if (snapshot.exists()) {
+            const data = snapshot.val() as { [key: string]: UploadedImage };
+            console.log(data, "data snapshot");
+            const publicIds = Object.values(data).map((item) => item.publicId);
+            deleteCloudinaryMutation({ publicId: publicIds });
+          } else {
+            console.log("No data available");
+          }
+        }
+      );
+      // const uploadedImageRef = dbRef(db, "uploadedImages/" + authDetails.uid);
+      // uploadedImageRef.once("value").then((snapshot) => {
+      //   const userData = snapshot.val();
+      //   console.log("userData", userData);
+      // });
+    }
   };
   return (
     <div className="w-[60%] mx-auto  ">

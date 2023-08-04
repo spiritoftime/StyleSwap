@@ -60,7 +60,7 @@ const Auth = ({ isSignUp }: AuthProps) => {
               set(ref(db, "users/" + user.uid), {
                 photoURL: user.photoURL,
                 emailVerified: user.emailVerified,
-                displayName: user.displayName,
+                displayName: user.displayName || "Awesome User",
                 uid: user.uid,
                 email: user.email,
               });

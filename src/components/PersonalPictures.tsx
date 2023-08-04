@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { User as FirebaseUser } from "firebase/auth";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppContext } from "@/context/appContext";
@@ -17,8 +16,8 @@ type SnapshotCallback = (snapshot: DataSnapshot) => void;
 interface UploadedImage {
   extension: string;
   fileName: string;
-  photoURL: string;
   publicId: string;
+  photoURL: string;
 }
 interface TransformedImage {
   photoURL: string;
@@ -32,10 +31,9 @@ const PersonalPictures = () => {
     TransformedImage[] | null
   >(null);
 
-  const {
-    authDetails: { uid: userId },
-  }: { authDetails: FirebaseUser | object } = useAppContext();
-
+  const { authDetails } = useAppContext();
+  let userId: string | null = null;
+  if (authDetails) userId = authDetails.uid;
   useEffect(() => {
     const db = getDatabase();
     const uploadedImagesRef = ref(db, "uploadedImages/" + userId);

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Pagination from "./Pagination";
 interface UploadedImage {
-  extension: string;
-  fileName: string;
+  extension?: string;
+  fileName?: string;
+  publicId?: string;
   photoURL: string;
-  publicId: string;
 }
 type MasonryGridProps = {
   uploadedImages: UploadedImage[];
