@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../../public/logo-removebg-preview.png";
+import logo from "../assets/logo-removebg-preview.png";
 
 import { Link, useNavigate, useMatch } from "react-router-dom";
 import {

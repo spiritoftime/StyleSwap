@@ -1,7 +1,7 @@
 import { Toaster } from "./ui/toaster";
-import firstImage from "../../public/image-1.jpg";
+import firstImage from "../assets/image-1.png";
 
-import secondImage from "../../public/image-2.jpg";
+import secondImage from "../assets/image-2.png";
 import { Separator } from "./ui/separator";
 import Carousel from "./Carousel";
 import Features from "./Features";

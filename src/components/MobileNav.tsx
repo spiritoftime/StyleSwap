@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../public/logo-removebg-preview.png";
+import logo from "../assets/logo-removebg-preview.png";
 import { cn } from "@/lib/utils";
 type NavItem = {
   title: string;
