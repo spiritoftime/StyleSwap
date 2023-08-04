@@ -65,10 +65,10 @@ const PlaygroundTransform = ({ fileName }: { fileName: string }) => {
     });
   };
   return (
-    <div className="flex items-center justify-between gap-8">
-      <form className="w-[60%]" onSubmit={submitHandler}>
+    <div className="flex flex-col items-center justify-between gap-8 sm:flex-row">
+      <form className="" onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 ">
             <Label className="whitespace-nowrap" htmlFor="what-to-replace">
               What To Replace:
             </Label>
@@ -78,7 +78,7 @@ const PlaygroundTransform = ({ fileName }: { fileName: string }) => {
               type="text"
             />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 ">
             <Label className="whitespace-nowrap" htmlFor="replace-with">
               To Replace With:
             </Label>

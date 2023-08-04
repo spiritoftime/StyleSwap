@@ -82,7 +82,7 @@ const PlaygroundUpload: React.FC<PlaygroundUploadProps> = ({
       });
   };
   return (
-    <div className="flex flex-col items-center justify-between gap-8 sm:flex-row ablublu">
+    <div className="flex flex-col items-center justify-between gap-8 sm:flex-row ">
       <form onSubmit={submitHandler}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4 ">
