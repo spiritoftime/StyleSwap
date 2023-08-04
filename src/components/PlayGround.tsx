@@ -1,7 +1,8 @@
 import { Info } from "lucide-react";
 import { Toaster } from "./ui/toaster";
-import firstImage from "@/assets/image-1.png";
-import secondImage from "@/assets/image-2.png";
+import firstImage from "../../public/image-1.jpg";
+
+import secondImage from "../../public/image-2.jpg";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

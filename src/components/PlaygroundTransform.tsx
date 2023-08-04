@@ -1,5 +1,5 @@
 import { useState } from "react";
-import dummy from "@/assets/dummy.jpg";
+import dummy from "../../public/dummy.jpg";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
