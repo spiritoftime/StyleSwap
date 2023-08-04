@@ -97,11 +97,15 @@ const Navbar = () => {
       {homePageMatch && showMobileMenu && (
         <MobileNav navItems={landingPageItems} />
       )}
-      {authDetails.uid ? (
+      {authDetails && authDetails.uid ? (
         <div className="flex items-center justify-end gap-2">
-          <p className="hidden font-semibold sm:block ">
-            {convertToTitleCase(authDetails.displayName)}
-          </p>
+          {authDetails.displayName !== null ? (
+            <p className="font-semibold sm:block">
+              {convertToTitleCase(authDetails.displayName)}
+            </p>
+          ) : (
+            <p className="font-semibold sm:block">Default Name</p>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button>
@@ -122,7 +126,7 @@ const Navbar = () => {
               <DropdownMenuItem
                 onClick={() => {
                   signOut(auth);
-                  setAuthDetails({});
+                  setAuthDetails(null);
                 }}
               >
                 Logout

@@ -6,16 +6,16 @@ interface AppContextProps {
   children: JSX.Element;
 }
 export interface appContext {
-  authDetails: FirebaseUser | object;
-  setAuthDetails: React.Dispatch<React.SetStateAction<FirebaseUser | object>>;
+  authDetails: FirebaseUser | null;
+  setAuthDetails: React.Dispatch<React.SetStateAction<FirebaseUser | null>>;
 }
-const AppContext = React.createContext<appContext | object>({});
+const AppContext = React.createContext<appContext | undefined>(undefined);
 const AppProvider: React.FC<AppContextProps> = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [authDetails, setAuthDetails] = useState<FirebaseUser | object>({});
+  const [authDetails, setAuthDetails] = useState<FirebaseUser | null>(null);
 
   return (
     <AppContext.Provider value={{ authDetails, setAuthDetails }}>
@@ -24,6 +24,10 @@ const AppProvider: React.FC<AppContextProps> = ({
   );
 };
 export const useAppContext = () => {
-  return useContext(AppContext);
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error("useAppContext must be used within AppProvider");
+  }
+  return context;
 };
 export { AppProvider };

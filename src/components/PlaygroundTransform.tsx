@@ -9,7 +9,7 @@ import { getDatabase, push, ref, set } from "firebase/database";
 import { transformImage } from "./services/transform";
 import { Loader2 } from "lucide-react";
 
-const PlaygroundTransform = ({ fileName }) => {
+const PlaygroundTransform = ({ fileName }: { fileName: string }) => {
   const [replaceWith, setReplaceWith] = useState("");
   const [toReplace, setToReplace] = useState("");
   const [preview, setPreview] = useState<null | string>(null);
