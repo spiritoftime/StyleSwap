@@ -139,28 +139,35 @@ const Profile = () => {
     deleted: Record<string, string>;
     partial: boolean;
   };
-  const { mutate: deleteCloudinaryMutation } = useMutation({
-    mutationFn: (data: deleteData) => {
+  const { mutate: deleteCloudinaryMutation } = useMutation(
+    (data: deleteData): Promise<CloudinaryData> => {
       // console.log("mutation data", data);
       if (authDetails) return deleteImages(authDetails.uid, data);
+      else {
+        return Promise.reject(
+          new Error("Authentication details are not available.")
+        );
+      }
     },
-    onSuccess: (cloudinaryData: CloudinaryData) => {
-      console.log(cloudinaryData, "delete cloudinaryData");
-      // delete firebase records
-      const userRef = dbRef(DB, "uploadedImages/" + authDetails?.uid);
-      remove(userRef)
-        .then(() => {
-          // console.log("Data removed successfully.");
-          toast({
-            description: "Your photos have been removed",
+    {
+      onSuccess: (cloudinaryData: CloudinaryData) => {
+        console.log(cloudinaryData, "delete cloudinaryData");
+        // delete firebase records
+        const userRef = dbRef(DB, "uploadedImages/" + authDetails?.uid);
+        remove(userRef)
+          .then(() => {
+            // console.log("Data removed successfully.");
+            toast({
+              description: "Your photos have been removed",
+            });
+          })
+          .catch((error) => {
+            console.error("Error removing data:", error);
           });
-        })
-        .catch((error) => {
-          console.error("Error removing data:", error);
-        });
-      setIsLoading(false);
-    },
-  });
+        setIsLoading(false);
+      },
+    }
+  );
   const deletePictureHandler = () => {
     console.log("delete running");
     // fetch public ids from firebase
