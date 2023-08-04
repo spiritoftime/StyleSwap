@@ -22,27 +22,37 @@ const PlaygroundTransform = ({ fileName }: { fileName: string }) => {
   let userId: string | null = null;
   if (authDetails) userId = authDetails.uid;
   const [error, setError] = useState("");
-  const { mutate: transformCloudinaryMutation } = useMutation({
-    mutationFn: ({ fileName, prompt }:{  fileName: string,
-      prompt: string}) => {
+
+  const { mutate: transformCloudinaryMutation } = useMutation(
+    ({
+      fileName,
+      prompt,
+    }: {
+      fileName: string;
+      prompt: string;
+    }): Promise<string> => {
       return transformImage(userId, fileName, prompt);
     },
-    onSuccess: (cloudinaryData: string) => {
-      const getImageUrlFromImageElementString = (
-        imageElementString: string
-      ) => {
-        const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
-        const match = srcRegex.exec(imageElementString);
-        return match ? match[1] : null;
-      };
-      const url = getImageUrlFromImageElementString(cloudinaryData);
-      setPreview(url);
-      const transformedImageRef = push(ref(db, `transformedImages/${userId}`));
-      set(transformedImageRef, { photoURL: url });
+    {
+      onSuccess: (cloudinaryData: string) => {
+        const getImageUrlFromImageElementString = (
+          imageElementString: string
+        ) => {
+          const srcRegex = /<img\s+src=['"](.*?)['"].*\/?>/i;
+          const match = srcRegex.exec(imageElementString);
+          return match ? match[1] : null;
+        };
+        const url = getImageUrlFromImageElementString(cloudinaryData);
+        setPreview(url);
+        const transformedImageRef = push(
+          ref(db, `transformedImages/${userId}`)
+        );
+        set(transformedImageRef, { photoURL: url });
 
-      setIsLoading(false);
-    },
-  });
+        setIsLoading(false);
+      },
+    }
+  );
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
