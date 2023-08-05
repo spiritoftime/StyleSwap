@@ -145,8 +145,8 @@ const Profile = () => {
       }
     },
     {
-      onSuccess: (cloudinaryData: CloudinaryData) => {
-        console.log(cloudinaryData, "delete cloudinaryData");
+      onSuccess: () => {
+        // console.log(cloudinaryData, "delete cloudinaryData");
         // delete firebase records
         deleteFirebaseRecords("uploadedImages/" + authDetails?.uid)
           .then(() => {

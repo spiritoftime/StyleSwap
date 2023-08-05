@@ -24,13 +24,13 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
       {images.map((image, index: number) => (
         <div
           key={index}
-          className={`absolute top-0 left-0 w-full sm:h-full transition-opacity duration-500 ease-in-out ${
+          className={`absolute top-0 left-0 w-full max-h-[280px] sm:max-h-full  sm:h-full transition-opacity duration-500 ease-in-out ${
             index === activeIndex ? "opacity-100" : "opacity-0"
           }`}
         >
           <img
             src={image}
-            className="object-contain w-full sm:h-full"
+            className="object-contain w-full max-h-[280px] sm:max-h-full sm:h-full"
             alt={`Slide ${index + 1}`}
           />
         </div>
