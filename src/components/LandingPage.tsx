@@ -7,6 +7,7 @@ import Carousel from "./Carousel";
 import Features from "./Features";
 import useSmoothScroll from "@/custom_hooks/useSmoothScroll";
 import FAQ from "./FAQ";
+import Demo from "./Demo";
 // #111724
 const LandingPage = () => {
   useSmoothScroll();
@@ -29,6 +30,7 @@ const LandingPage = () => {
           <Carousel images={[firstImage, secondImage]} />
         </section>
       </section>
+      <Demo />
       <Features />
       <FAQ />
       <Toaster />

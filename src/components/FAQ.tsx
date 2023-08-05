@@ -32,8 +32,8 @@ const FAQ = () => {
           <AccordionContent className="text-sm leading-relaxed tracking-wide text-gray-700">
             At present, AI is not very good with processing body parts, such as
             hands or even exposed skin. Try wearing more covered clothing and
-            reduce the number of distractions in your uploaded images for better
-            results!
+            reduce the number of distractions in your uploaded images (eg. dog
+            in background) for better results!
           </AccordionContent>
         </AccordionItem>
       </Accordion>
