@@ -59,6 +59,7 @@ const Profile = () => {
   const { toast } = useToast();
   const DB = getDatabase();
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [photoPreviewLink, setPhotoPreviewLink] = useState(
     authDetails && authDetails.photoURL
@@ -105,8 +106,10 @@ const Profile = () => {
 
       data.photoURL = photoUrl;
       delete data.photo;
-    } else if (authDetails) {
+    } else if (!data.photo && authDetails) {
       data.photoURL = authDetails?.photoURL ?? null;
+    }
+    if (authDetails)
       updateProfile(authDetails, data)
         .then(() => {
           // console.log("success");
@@ -120,7 +123,6 @@ const Profile = () => {
           setIsLoading(false);
           console.log(error, "error");
         });
-    }
   };
   //   sample deletecloudinary response - https://cloudinary.com/documentation/admin_api#delete_resources
   // {
@@ -163,13 +165,13 @@ const Profile = () => {
           .catch((error) => {
             console.error("Error removing data:", error);
           });
-        setIsLoading(false);
+        setDeleteIsLoading(false);
       },
     }
   );
   const deletePictureHandler = () => {
-    console.log("delete running");
     // fetch public ids from firebase
+    setDeleteIsLoading(true);
     if (authDetails) {
       const DBRef = dbRef(DB);
 
@@ -294,8 +296,19 @@ const Profile = () => {
       </Form>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="mt-6" variant="destructive">
-            Delete Pictures
+          <Button
+            disabled={deleteIsLoading}
+            className="mt-6"
+            variant="destructive"
+          >
+            {deleteIsLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Please wait
+              </>
+            ) : (
+              "Delete Pictures"
+            )}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

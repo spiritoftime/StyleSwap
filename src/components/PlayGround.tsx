@@ -110,7 +110,8 @@ const PlayGround = () => {
               <CardDescription>
                 Make your custom image! Type what you want to replace and what
                 to replace with. Click the info icon at playground header for
-                more info.
+                more info. Please be patient if the image is not showing,
+                wouldn't take longer than a minute.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
