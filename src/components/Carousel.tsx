@@ -20,7 +20,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   }, [images.length]);
 
   return (
-    <div className="relative w-full h-40 sm:h-96">
+    <div className="relative w-full h-44 mobile:h-56 sm:h-96">
       {images.map((image, index: number) => (
         <div
           key={index}
