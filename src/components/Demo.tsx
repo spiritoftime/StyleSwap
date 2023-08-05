@@ -4,7 +4,7 @@ import firstImage from "../assets/image-1.png";
 import secondImage from "../assets/image-2.png";
 const Demo = () => {
   return (
-    <div className="container py-8 space-y-6 js-show-on-scroll bg-[#f9f9f9] dark:bg-transparent md:py-12 lg:py-24">
+    <div className="container py-8 space-y-6 js-show-on-scroll bg-[#f9f9f9] dark:bg-transparent md:py-12 md:mt-12 lg:mt-24 lg:py-24">
       <h2 className="font-heading text-3xl leading-[1.1] font-bold text-center  sm:text-3xl md:text-6xl">
         Use Case Demonstration
       </h2>

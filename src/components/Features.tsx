@@ -4,7 +4,7 @@ const Features = () => {
   return (
     <section
       id="features"
-      className="container py-8 space-y-6 js-show-on-scroll bg-slate-50 dark:bg-transparent md:mt-12 lg:mt-24"
+      className="container py-8 space-y-6 js-show-on-scroll bg-slate-50 dark:bg-transparent md:pt-12 lg:pt-24"
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
         <h2 className="font-heading text-3xl leading-[1.1] font-bold text-center  sm:text-3xl md:text-6xl">
