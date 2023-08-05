@@ -6,6 +6,7 @@ import { Separator } from "./ui/separator";
 import Carousel from "./Carousel";
 import Features from "./Features";
 import useSmoothScroll from "@/custom_hooks/useSmoothScroll";
+import FAQ from "./FAQ";
 // #111724
 const LandingPage = () => {
   useSmoothScroll();
@@ -29,6 +30,7 @@ const LandingPage = () => {
         </section>
       </section>
       <Features />
+      <FAQ />
       <Toaster />
     </div>
   );

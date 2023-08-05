@@ -4,10 +4,10 @@ const Features = () => {
   return (
     <section
       id="features"
-      className="container py-8 space-y-6 js-show-on-scroll bg-slate-50 dark:bg-transparent md:py-12 lg:py-24"
+      className="container py-8 space-y-6 js-show-on-scroll bg-slate-50 dark:bg-transparent md:mt-12 lg:mt-24"
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-        <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+        <h2 className="font-heading text-3xl leading-[1.1] font-bold text-center  sm:text-3xl md:text-6xl">
           Features
         </h2>
         <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
