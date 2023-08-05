@@ -1,12 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
-import {
-  getDatabase,
-  ref as dbRef,
-  child,
-  remove,
-  get,
-} from "firebase/database";
+import { getDatabase, ref as dbRef, child, get } from "firebase/database";
 import { SubmitHandler } from "react-hook-form";
 
 import { storage } from "../firebase";
@@ -43,6 +37,7 @@ import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { deleteData, deleteImages } from "./services/upload";
 import { Toaster } from "./ui/toaster";
+import { deleteFirebaseRecords } from "@/utils/firebase";
 interface UploadedImage {
   extension: string;
   fileName: string;
@@ -153,13 +148,17 @@ const Profile = () => {
       onSuccess: (cloudinaryData: CloudinaryData) => {
         console.log(cloudinaryData, "delete cloudinaryData");
         // delete firebase records
-        const userRef = dbRef(DB, "uploadedImages/" + authDetails?.uid);
-        remove(userRef)
+        deleteFirebaseRecords("uploadedImages/" + authDetails?.uid)
           .then(() => {
-            // console.log("Data removed successfully.");
-            toast({
-              description: "Your photos have been removed",
-            });
+            deleteFirebaseRecords("transformedImages/" + authDetails?.uid)
+              .then(() => {
+                toast({
+                  description: "Your photos have been removed",
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
           .catch((error) => {
             console.error("Error removing data:", error);
@@ -179,7 +178,6 @@ const Profile = () => {
           // console.log(snapshot, "snapshot");
           if (snapshot.exists()) {
             const data = snapshot.val() as { [key: string]: UploadedImage };
-            console.log(data, "data snapshot");
             const publicIds = Object.values(data).map((item) => item.publicId);
             deleteCloudinaryMutation({ publicId: publicIds });
           } else {
