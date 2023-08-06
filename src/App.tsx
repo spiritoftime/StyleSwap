@@ -9,6 +9,7 @@ import AppLayout from "./components/AppLayout";
 import Profile from "./components/Profile";
 import useCheckAuth from "./custom_hooks/useCheckAuth";
 import PersonalPictures from "./components/PersonalPictures";
+import BuyCredits from "./components/BuyCredits";
 function App() {
   useCheckAuth();
 
@@ -41,6 +42,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PersonalPictures />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/credits"
+          element={
+            <ProtectedRoute>
+              <BuyCredits />
             </ProtectedRoute>
           }
         ></Route>

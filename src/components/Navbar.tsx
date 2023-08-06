@@ -24,7 +24,7 @@ const Navbar = () => {
     { title: "Transform", href: "/playground", disabled: false },
     { title: "Collage", href: "/collage", disabled: true },
     { title: "AMA", href: "/ama", disabled: true },
-    { title: "Buy Credits", href: "/credits", disabled: true },
+    { title: "Buy Credits", href: "/credits", disabled: false },
   ];
   const landingPageItems = [
     {
@@ -35,7 +35,7 @@ const Navbar = () => {
     { title: "Transform", href: "/playground", disabled: false },
     { title: "Collage", href: "/collage", disabled: true },
     { title: "AMA", href: "/ama", disabled: true },
-    { title: "Buy Credits", href: "/credits", disabled: true },
+    { title: "Buy Credits", href: "/credits", disabled: false },
   ];
   const homePageMatch = useMatch("/");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
