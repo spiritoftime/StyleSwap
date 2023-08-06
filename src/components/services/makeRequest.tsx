@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
     import.meta.env.VITE_ENV === "production"
       ? import.meta.env.VITE_APP_BASE_URL
       : "http://localhost:3000/api",
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export function makeRequest<T>(
