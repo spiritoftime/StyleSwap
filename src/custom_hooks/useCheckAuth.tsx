@@ -14,6 +14,7 @@ const useCheckAuth = () => {
     }
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log("running");
         // console.log("use check auth is running", user);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
@@ -25,6 +26,7 @@ const useCheckAuth = () => {
                 "Authorization"
               ] = `Bearer ${token}`)
           );
+        console.log("bearer set");
         setAuthDetails(user);
       } else {
         axiosInstance.defaults.headers.common["Authorization"] = null;
